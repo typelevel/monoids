@@ -29,33 +29,38 @@ private[monoids] trait SumInstances extends SumInstances1 {
 
   implicit def sumOrder[A: Order]: Order[Sum[A]] =
     Order.by(_.getSum)
-  implicit val sumMonad: Monad[Sum] with NonEmptyTraverse[Sum] = new Monad[Sum] with NonEmptyTraverse[Sum] {
-    def pure[A](a: A): Sum[A] = Sum(a)
-    def flatMap[A,B](fa: Sum[A])(f: A => Sum[B]): Sum[B] = f(fa.getSum)
 
-    @scala.annotation.tailrec
-    def tailRecM[A, B](a: A)(f: A => Sum[Either[A,B]]): Sum[B] =
-      f(a) match {
-        case Sum(Left(a)) => tailRecM(a)(f)
-        case Sum(Right(b)) => Sum(b)
-      }
+  implicit val sumInstances: Monad[Sum] with NonEmptyTraverse[Sum] with Distributive[Sum] = 
+    new Monad[Sum] with NonEmptyTraverse[Sum] with Distributive[Sum] {
+      def pure[A](a: A): Sum[A] = Sum(a)
+      def flatMap[A,B](fa: Sum[A])(f: A => Sum[B]): Sum[B] = f(fa.getSum)
 
-    // Members declared in cats.Foldable
-    def foldLeft[A, B](fa: Sum[A],b: B)(f: (B, A) => B): B = 
-      f(b, fa.getSum)
-    def foldRight[A, B](fa: Sum[A],lb: cats.Eval[B])(f: (A, cats.Eval[B]) => cats.Eval[B]): cats.Eval[B] =
-      f(fa.getSum, lb)
-    
-    // Members declared in cats.NonEmptyTraverse
-    def nonEmptyTraverse[G[_]: Apply, A, B](fa: Sum[A])(f: A => G[B]): G[Sum[B]] = 
-      f(fa.getSum).map(Sum(_))
-    
-    // Members declared in cats.Reducible
-    def reduceLeftTo[A, B](fa: Sum[A])(f: A => B)(g: (B, A) => B): B = 
-      f(fa.getSum)
-    def reduceRightTo[A, B](fa: Sum[A])(f: A => B)(g: (A, cats.Eval[B]) => cats.Eval[B]): cats.Eval[B] = 
-      f(fa.getSum).pure[Eval]
-  }
+      @scala.annotation.tailrec
+      def tailRecM[A, B](a: A)(f: A => Sum[Either[A,B]]): Sum[B] =
+        f(a) match {
+          case Sum(Left(a)) => tailRecM(a)(f)
+          case Sum(Right(b)) => Sum(b)
+        }
+
+      // Members declared in cats.Foldable
+      def foldLeft[A, B](fa: Sum[A],b: B)(f: (B, A) => B): B = 
+        f(b, fa.getSum)
+      def foldRight[A, B](fa: Sum[A],lb: Eval[B])(f: (A, Eval[B]) => Eval[B]): Eval[B] =
+        f(fa.getSum, lb)
+      
+      // Members declared in cats.NonEmptyTraverse
+      def nonEmptyTraverse[G[_]: Apply, A, B](fa: Sum[A])(f: A => G[B]): G[Sum[B]] = 
+        f(fa.getSum).map(Sum(_))
+      
+      // Members declared in cats.Reducible
+      def reduceLeftTo[A, B](fa: Sum[A])(f: A => B)(g: (B, A) => B): B = 
+        f(fa.getSum)
+      def reduceRightTo[A, B](fa: Sum[A])(f: A => B)(g: (A, Eval[B]) => Eval[B]): Eval[B] = 
+        f(fa.getSum).pure[Eval]
+
+      def distribute[G[_]: Functor, A, B](ga: G[A])(f: A => Sum[B]): Sum[G[B]] = 
+          Sum(ga.map(f).map(_.getSum))
+    }
 }
 
 private[monoids] trait SumInstances1 {

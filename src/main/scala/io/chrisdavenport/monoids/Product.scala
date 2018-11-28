@@ -29,33 +29,37 @@ private[monoids] trait ProductInstances extends ProductInstances1 {
 
   implicit def productOrder[A: Order]: Order[Product[A]] =
     Order.by(_.getProduct)
-  implicit val productMonad: Monad[Product] with NonEmptyTraverse[Product] = new Monad[Product] with NonEmptyTraverse[Product]{
-    def pure[A](a: A): Product[A] = Product(a)
-    def flatMap[A,B](fa: Product[A])(f: A => Product[B]): Product[B] = f(fa.getProduct)
 
-    @scala.annotation.tailrec
-    def tailRecM[A, B](a: A)(f: A => Product[Either[A,B]]): Product[B] =
-      f(a) match {
-        case Product(Left(a)) => tailRecM(a)(f)
-        case Product(Right(b)) => Product(b)
-      }
-    // Members declared in cats.Foldable
-    def foldLeft[A, B](fa: Product[A],b: B)(f: (B, A) => B): B = 
-      f(b, fa.getProduct)
-    def foldRight[A, B](fa: Product[A],lb: cats.Eval[B])(f: (A, cats.Eval[B]) => cats.Eval[B]): cats.Eval[B] =
-      f(fa.getProduct, lb)
-    
-    // Members declared in cats.NonEmptyTraverse
-    def nonEmptyTraverse[G[_]: Apply, A, B](fa: Product[A])(f: A => G[B]): G[Product[B]] = 
-      f(fa.getProduct).map(Product(_))
-    
-    // Members declared in cats.Reducible
-    def reduceLeftTo[A, B](fa: Product[A])(f: A => B)(g: (B, A) => B): B = 
-      f(fa.getProduct)
-    def reduceRightTo[A, B](fa: Product[A])(f: A => B)(g: (A, cats.Eval[B]) => cats.Eval[B]): cats.Eval[B] = 
-      f(fa.getProduct).pure[Eval]
+  implicit val productInstances: Monad[Product] with NonEmptyTraverse[Product] with Distributive[Product] = 
+    new Monad[Product] with NonEmptyTraverse[Product] with Distributive[Product] {
+      def pure[A](a: A): Product[A] = Product(a)
+      def flatMap[A,B](fa: Product[A])(f: A => Product[B]): Product[B] = f(fa.getProduct)
 
-  }
+      @scala.annotation.tailrec
+      def tailRecM[A, B](a: A)(f: A => Product[Either[A,B]]): Product[B] =
+        f(a) match {
+          case Product(Left(a)) => tailRecM(a)(f)
+          case Product(Right(b)) => Product(b)
+        }
+      // Members declared in cats.Foldable
+      def foldLeft[A, B](fa: Product[A],b: B)(f: (B, A) => B): B = 
+        f(b, fa.getProduct)
+      def foldRight[A, B](fa: Product[A],lb: cats.Eval[B])(f: (A, Eval[B]) => Eval[B]): Eval[B] =
+        f(fa.getProduct, lb)
+      
+      // Members declared in cats.NonEmptyTraverse
+      def nonEmptyTraverse[G[_]: Apply, A, B](fa: Product[A])(f: A => G[B]): G[Product[B]] = 
+        f(fa.getProduct).map(Product(_))
+      
+      // Members declared in cats.Reducible
+      def reduceLeftTo[A, B](fa: Product[A])(f: A => B)(g: (B, A) => B): B = 
+        f(fa.getProduct)
+      def reduceRightTo[A, B](fa: Product[A])(f: A => B)(g: (A, Eval[B]) => Eval[B]): Eval[B] = 
+        f(fa.getProduct).pure[Eval]
+        
+      def distribute[G[_]: Functor, A, B](ga: G[A])(f: A => Product[B]): Product[G[B]] = 
+          Product(ga.map(f).map(_.getProduct))
+    }
 }
 
 private[monoids] trait ProductInstances1 {
