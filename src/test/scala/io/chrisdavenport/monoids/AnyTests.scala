@@ -13,4 +13,9 @@ class AnyTests extends CatsSuite with MonoidsArbitraries {
     Any(false).show shouldEqual "Any(false)"
   }
 
+  test("Any true is true"){
+    List(false, false, false).foldMap(Any(_)) shouldEqual Any(false)
+    List(false, true, false).foldMap(Any(_)) shouldEqual Any(true)
+  }
+
 }

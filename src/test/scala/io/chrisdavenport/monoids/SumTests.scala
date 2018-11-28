@@ -18,4 +18,7 @@ class SumTests extends CatsSuite with MonoidsArbitraries {
     Sum(true).show shouldEqual "Sum(true)"
     Sum(false).show shouldEqual "Sum(false)"
   }
+  test("multiplication"){
+    List(1,2,3,6).foldMap(Sum(_)) shouldEqual Sum(12)
+  }
 }

@@ -18,4 +18,8 @@ class ProductTests extends CatsSuite with MonoidsArbitraries {
     Product(true).show shouldEqual "Product(true)"
     Product(false).show shouldEqual "Product(false)"
   }
+
+  test("multiplication"){
+    List(1,2,3,6).foldMap(Product(_)) shouldEqual Product(36)
+  }
 }
