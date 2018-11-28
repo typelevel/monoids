@@ -11,18 +11,6 @@ private[monoids] trait ProductInstances extends ProductInstances1 {
     def empty : Product[A] = Product(T.one)
     def combine(x: Product[A], y: Product[A]): Product[A]= Product(T.times(x.getProduct, y.getProduct))
   }
-  implicit def productNumeric[A](implicit T: Numeric[A]): Numeric[Product[A]] = new Numeric[Product[A]]{
-    def compare(x: Product[A], y: Product[A]): Int = T.compare(x.getProduct, y.getProduct)
-    def fromInt(x: Int): Product[A] = Product(T.fromInt(x))
-    def minus(x: Product[A], y: Product[A]):Product[A] = Product(T.minus(x.getProduct, y.getProduct))
-    def negate(x: Product[A]): Product[A] = Product(T.negate(x.getProduct))
-    def plus(x: Product[A], y: Product[A]): Product[A] = Product(T.plus(x.getProduct, y.getProduct))
-    def times(x: Product[A], y: Product[A]): Product[A] = Product(T.times(x.getProduct, y.getProduct))
-    def toDouble(x: Product[A]): Double = T.toDouble(x.getProduct)
-    def toFloat(x: Product[A]): Float = T.toFloat(x.getProduct)
-    def toInt(x: Product[A]): Int = T.toInt(x.getProduct)
-    def toLong(x: Product[A]): Long  = T.toLong(x.getProduct)
-  }
 
   implicit def productShow[A: Show]: Show[Product[A]] = 
     Show.show[Product[A]](productA => show"Product(${productA.getProduct})")

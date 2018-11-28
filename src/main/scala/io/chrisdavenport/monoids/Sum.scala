@@ -11,19 +11,7 @@ private[monoids] trait SumInstances extends SumInstances1 {
     def empty : Sum[A] = Sum(T.zero)
     def combine(x: Sum[A], y: Sum[A]):Sum[A]= Sum(T.plus(x.getSum, y.getSum))
   }
-  implicit def sumNumeric[A](implicit T: Numeric[A]): Numeric[Sum[A]] = new Numeric[Sum[A]]{
-    def compare(x: Sum[A], y: Sum[A]): Int = T.compare(x.getSum, y.getSum)
-    def fromInt(x: Int): Sum[A] = Sum(T.fromInt(x))
-    def minus(x: Sum[A], y: Sum[A]):Sum[A] = Sum(T.minus(x.getSum, y.getSum))
-    def negate(x: Sum[A]): Sum[A] = Sum(T.negate(x.getSum))
-    def plus(x: Sum[A], y: Sum[A]): Sum[A] = Sum(T.plus(x.getSum, y.getSum))
-    def times(x: Sum[A], y: Sum[A]): Sum[A] = Sum(T.times(x.getSum, y.getSum))
-    def toDouble(x: Sum[A]): Double = T.toDouble(x.getSum)
-    def toFloat(x: Sum[A]): Float = T.toFloat(x.getSum)
-    def toInt(x: Sum[A]): Int = T.toInt(x.getSum)
-    def toLong(x: Sum[A]): Long  = T.toLong(x.getSum)
-  }
-
+  
   implicit def sumShow[A: Show]: Show[Sum[A]] = 
     Show.show[Sum[A]](SumA => show"Sum(${SumA.getSum})")
 
