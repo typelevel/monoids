@@ -7,9 +7,21 @@ final case class Product[A](getProduct: A) extends AnyVal
 object Product extends ProductInstances
 
 private[monoids] trait ProductInstances extends ProductInstances1 {
-  implicit def sumNumeric[A](implicit T: Numeric[A]): Monoid[Product[A]] = new Monoid[Product[A]]{
+  implicit def productNumericMonoid[A](implicit T: Numeric[A]): Monoid[Product[A]] = new Monoid[Product[A]]{
     def empty : Product[A] = Product(T.one)
     def combine(x: Product[A], y: Product[A]): Product[A]= Product(T.times(x.getProduct, y.getProduct))
+  }
+  implicit def productNumeric[A](implicit T: Numeric[A]): Numeric[Product[A]] = new Numeric[Product[A]]{
+    def compare(x: Product[A], y: Product[A]): Int = T.compare(x.getProduct, y.getProduct)
+    def fromInt(x: Int): Product[A] = Product(T.fromInt(x))
+    def minus(x: Product[A], y: Product[A]):Product[A] = Product(T.minus(x.getProduct, y.getProduct))
+    def negate(x: Product[A]): Product[A] = Product(T.negate(x.getProduct))
+    def plus(x: Product[A], y: Product[A]): Product[A] = Product(T.plus(x.getProduct, y.getProduct))
+    def times(x: Product[A], y: Product[A]): Product[A] = Product(T.times(x.getProduct, y.getProduct))
+    def toDouble(x: Product[A]): Double = T.toDouble(x.getProduct)
+    def toFloat(x: Product[A]): Float = T.toFloat(x.getProduct)
+    def toInt(x: Product[A]): Int = T.toInt(x.getProduct)
+    def toLong(x: Product[A]): Long  = T.toLong(x.getProduct)
   }
 
   implicit def productShow[A: Show]: Show[Product[A]] = 
@@ -17,7 +29,7 @@ private[monoids] trait ProductInstances extends ProductInstances1 {
 
   implicit def productOrder[A: Order]: Order[Product[A]] =
     Order.by(_.getProduct)
-  implicit val productMonad: Monad[Product] = new Monad[Product]{
+  implicit val productMonad: Monad[Product] with NonEmptyTraverse[Product] = new Monad[Product] with NonEmptyTraverse[Product]{
     def pure[A](a: A): Product[A] = Product(a)
     def flatMap[A,B](fa: Product[A])(f: A => Product[B]): Product[B] = f(fa.getProduct)
 
@@ -27,6 +39,22 @@ private[monoids] trait ProductInstances extends ProductInstances1 {
         case Product(Left(a)) => tailRecM(a)(f)
         case Product(Right(b)) => Product(b)
       }
+    // Members declared in cats.Foldable
+    def foldLeft[A, B](fa: Product[A],b: B)(f: (B, A) => B): B = 
+      f(b, fa.getProduct)
+    def foldRight[A, B](fa: Product[A],lb: cats.Eval[B])(f: (A, cats.Eval[B]) => cats.Eval[B]): cats.Eval[B] =
+      f(fa.getProduct, lb)
+    
+    // Members declared in cats.NonEmptyTraverse
+    def nonEmptyTraverse[G[_]: Apply, A, B](fa: Product[A])(f: A => G[B]): G[Product[B]] = 
+      f(fa.getProduct).map(Product(_))
+    
+    // Members declared in cats.Reducible
+    def reduceLeftTo[A, B](fa: Product[A])(f: A => B)(g: (B, A) => B): B = 
+      f(fa.getProduct)
+    def reduceRightTo[A, B](fa: Product[A])(f: A => B)(g: (A, cats.Eval[B]) => cats.Eval[B]): cats.Eval[B] = 
+      f(fa.getProduct).pure[Eval]
+
   }
 }
 
