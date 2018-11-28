@@ -33,7 +33,7 @@ lazy val commonSettings = Seq(
   addCompilerPlugin("com.olegpy" %% "better-monadic-for" % betterMonadicForV),
   libraryDependencies ++= Seq(
     "org.typelevel"               %% "cats-core"                  % catsV,
-    "org.specs2"                  %% "specs2-core"                % specs2V       % Test
+    "org.typelevel"               %% "cats-testkit"               % catsV       % Test
   )
 )
 

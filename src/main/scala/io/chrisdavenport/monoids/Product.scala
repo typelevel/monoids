@@ -1,13 +1,14 @@
 package io.chrisdavenport.monoids
 
 import cats._
+import cats.kernel.CommutativeMonoid
 import cats.implicits._
 
 final case class Product[A](getProduct: A) extends AnyVal
 object Product extends ProductInstances
 
 private[monoids] trait ProductInstances extends ProductInstances1 {
-  implicit def productNumericMonoid[A](implicit T: Numeric[A]): Monoid[Product[A]] = new Monoid[Product[A]]{
+  implicit def productNumericMonoid[A](implicit T: Numeric[A]): CommutativeMonoid[Product[A]] = new CommutativeMonoid[Product[A]]{
     def empty : Product[A] = Product(T.one)
     def combine(x: Product[A], y: Product[A]): Product[A]= Product(T.times(x.getProduct, y.getProduct))
   }
@@ -18,8 +19,8 @@ private[monoids] trait ProductInstances extends ProductInstances1 {
   implicit def productOrder[A: Order]: Order[Product[A]] =
     Order.by(_.getProduct)
 
-  implicit val productInstances: Monad[Product] with NonEmptyTraverse[Product] with Distributive[Product] = 
-    new Monad[Product] with NonEmptyTraverse[Product] with Distributive[Product] {
+  implicit val productInstances: CommutativeMonad[Product] with NonEmptyTraverse[Product] with Distributive[Product] = 
+    new CommutativeMonad[Product] with NonEmptyTraverse[Product] with Distributive[Product] {
       def pure[A](a: A): Product[A] = Product(a)
       def flatMap[A,B](fa: Product[A])(f: A => Product[B]): Product[B] = f(fa.getProduct)
 

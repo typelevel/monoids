@@ -1,25 +1,26 @@
 package io.chrisdavenport.monoids
 
 import cats._
+import cats.kernel.CommutativeMonoid
 import cats.implicits._
 final case class Sum[A](getSum: A) extends AnyVal
 object Sum extends SumInstances
 
 private[monoids] trait SumInstances extends SumInstances1 {
 
-  implicit def sumNumericMonoid[A](implicit T: Numeric[A]): Monoid[Sum[A]] = new Monoid[Sum[A]]{
+  implicit def sumNumericMonoid[A](implicit T: Numeric[A]): CommutativeMonoid[Sum[A]] = new CommutativeMonoid[Sum[A]]{
     def empty : Sum[A] = Sum(T.zero)
     def combine(x: Sum[A], y: Sum[A]):Sum[A]= Sum(T.plus(x.getSum, y.getSum))
   }
-  
+
   implicit def sumShow[A: Show]: Show[Sum[A]] = 
     Show.show[Sum[A]](SumA => show"Sum(${SumA.getSum})")
 
   implicit def sumOrder[A: Order]: Order[Sum[A]] =
     Order.by(_.getSum)
 
-  implicit val sumInstances: Monad[Sum] with NonEmptyTraverse[Sum] with Distributive[Sum] = 
-    new Monad[Sum] with NonEmptyTraverse[Sum] with Distributive[Sum] {
+  implicit val sumInstances: CommutativeMonad[Sum] with NonEmptyTraverse[Sum] with Distributive[Sum] = 
+    new CommutativeMonad[Sum] with NonEmptyTraverse[Sum] with Distributive[Sum] {
       def pure[A](a: A): Sum[A] = Sum(a)
       def flatMap[A,B](fa: Sum[A])(f: A => Sum[B]): Sum[B] = f(fa.getSum)
 
