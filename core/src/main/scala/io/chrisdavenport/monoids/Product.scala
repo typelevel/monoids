@@ -5,7 +5,9 @@ import cats.kernel.CommutativeMonoid
 import cats.implicits._
 
 final case class Product[A](getProduct: A) extends AnyVal
-object Product extends ProductInstances
+object Product extends ProductInstances {
+  def product[F[_]: Foldable, A: Numeric](fa: F[A]): A = fa.foldMap(Product(_)).getProduct
+}
 
 private[monoids] trait ProductInstances extends ProductInstances1 {
   implicit def productNumericMonoid[A](implicit T: Numeric[A]): CommutativeMonoid[Product[A]] = new CommutativeMonoid[Product[A]]{

@@ -6,6 +6,9 @@ import cats.implicits._
 
 final case class Any(getAny: Boolean) extends AnyVal
 object Any {
+
+  def any[F[_]: Foldable](fa: F[Boolean]): Boolean = fa.foldMap(Any(_)).getAny
+  
   implicit val anyMonoid: CommutativeMonoid[Any] = new CommutativeMonoid[Any]{
     def empty: Any = Any(false)
     def combine(x: Any,y: Any): Any = Any(x.getAny || y.getAny)
