@@ -13,7 +13,7 @@ This library exposes
 - `Product` - Numeric newtype that combines values using Multiplication
 - `Sum` - Numeric newtype that combines values using Addition
 
-## [Head on over to the Microsite](https://christopherdavenport.github.io/selection)
+## [Head on over to the Microsite](https://christopherdavenport.github.io/monoids)
 
 ## Quick Start
 
