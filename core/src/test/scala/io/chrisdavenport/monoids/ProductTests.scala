@@ -22,4 +22,8 @@ class ProductTests extends CatsSuite with MonoidsArbitraries {
   test("multiplication"){
     List(1,2,3,6).foldMap(Product(_)) shouldEqual Product(36)
   }
+
+  test("product"){
+    Product.product(List(1,2,3,6)) shouldEqual 36
+  }
 }

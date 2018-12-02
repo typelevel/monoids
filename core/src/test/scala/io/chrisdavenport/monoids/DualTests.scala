@@ -20,10 +20,10 @@ class DualTests extends CatsSuite with MonoidsArbitraries {
   }
 
   test("inverse default"){
-      val first = "Hello "
-      val second = "World"
-      val expected = "Hello World"
-      first |+| second shouldEqual expected 
-      (Dual(second) |+| Dual(first)).getDual shouldEqual expected
+    val first = "Hello "
+    val second = "World"
+    val expected = "Hello World"
+    first |+| second shouldEqual expected
+    (Dual(second) |+| Dual(first)).getDual shouldEqual expected
   }
 }
