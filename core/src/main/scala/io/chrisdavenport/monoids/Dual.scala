@@ -8,7 +8,7 @@ object Dual extends DualInstances
 
 private[monoids] trait DualInstances extends DualInstances1 {
   implicit def dualMonoid[A: Monoid]: Monoid[Dual[A]] = new Monoid[Dual[A]]{
-    def empty: Dual[A] = Dual(Monoid[A].empty)
+    val empty: Dual[A] = Dual(Monoid[A].empty)
     def combine(x: Dual[A], y: Dual[A]): Dual[A] = 
       Dual(Monoid[A].combine(y.getDual, x.getDual))
   }

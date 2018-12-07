@@ -18,4 +18,16 @@ class AnyTests extends CatsSuite with MonoidsArbitraries {
     List(false, true, false).foldMap(Any(_)) shouldEqual Any(true)
   }
 
+  test("Any.any for true, false, true"){
+    Any.any(List(true, false, true).map(Any(_))) shouldEqual Any(true)
+  }
+
+  test("Any.any for true, true, true"){
+    Any.any(List(true, true, true).map(Any(_))) shouldEqual Any(true)
+  }
+
+  test("Any.any for false, false"){
+    Any.any(List(false, false).map(Any(_))) shouldEqual Any(false)
+  }
+
 }
