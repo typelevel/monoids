@@ -43,7 +43,7 @@ lazy val commonSettings = Seq(
 
   scalaVersion := "2.12.7",
   crossScalaVersions := Seq(scalaVersion.value, "2.11.12"),
-  scalacOptions += "-Yrangepos",
+  scalacOptions ++= Seq("-Yrangepos", "-language:higherKinds"),
 
   addCompilerPlugin("org.spire-math" % "kind-projector" % kindProjectorV cross CrossVersion.binary),
   addCompilerPlugin("com.olegpy" %% "better-monadic-for" % betterMonadicForV),

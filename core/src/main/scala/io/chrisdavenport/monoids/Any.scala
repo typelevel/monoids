@@ -7,7 +7,7 @@ import cats.implicits._
 final case class Any(getAny: Boolean) extends AnyVal
 object Any {
 
-  def any[F[_]: Foldable](fa: F[Boolean]): Boolean = fa.exists(identity)
+  def any[F[_]: Foldable](fa: F[Any]): Any = Any(fa.exists(_.getAny))
   
   implicit val anyMonoid: CommutativeMonoid[Any] = new CommutativeMonoid[Any]{
     val empty: Any = Any(false)
