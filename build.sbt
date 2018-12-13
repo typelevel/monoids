@@ -165,7 +165,9 @@ lazy val mimaSettings = {
   import sbtrelease.Version
 
   def semverBinCompatVersions(major: Int, minor: Int, patch: Int): Set[(Int, Int, Int)] = {
-    val majorVersions: List[Int] = List(major)
+    val majorVersions: List[Int] = 
+      if (major == 0 && minor == 0) List()
+      else List(major)
     val minorVersions : List[Int] = 
       if (major >= 1) Range(0, minor).inclusive.toList
       else List(minor)
