@@ -37,7 +37,7 @@ import cats.implicits._
 import io.chrisdavenport.monoids._
 ```
 
-The boolean monoids lift boolean algrebras into monoids.
+The boolean monoids lift boolean algebras into monoids.
 
 ```tut:book
 List(true, true, true).foldMap(All(_))
