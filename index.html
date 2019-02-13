@@ -35,7 +35,7 @@ add the following dependencies to your <code class="highlighter-rouge">build.sbt
 </code></pre>
 </div>
 
-<p>The boolean monoids lift boolean algrebras into monoids.</p>
+<p>The boolean monoids lift boolean algebras into monoids.</p>
 
 <div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="nc">List</span><span class="o">(</span><span class="kc">true</span><span class="o">,</span> <span class="kc">true</span><span class="o">,</span> <span class="kc">true</span><span class="o">).</span><span class="n">foldMap</span><span class="o">(</span><span class="nc">All</span><span class="o">(</span><span class="k">_</span><span class="o">))</span>
 <span class="c1">// res0: io.chrisdavenport.monoids.All = All(true)
