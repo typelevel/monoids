@@ -9,7 +9,6 @@ trait MonoidsArbitraries {
     Arbitrary(Arbitrary.arbitrary[Boolean].map(All(_)))
   implicit val anyArbitrary: Arbitrary[Any] = 
     Arbitrary(Arbitrary.arbitrary[Boolean].map(Any(_)))
-  
   implicit def dualArbitrary[A: Arbitrary]: Arbitrary[Dual[A]] =
     Arbitrary(Arbitrary.arbitrary[A].map(Dual(_)))
   implicit def firstArbitrary[A: Arbitrary]: Arbitrary[First[A]] =
