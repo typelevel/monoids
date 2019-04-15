@@ -25,7 +25,7 @@ lazy val docs = project.in(file("docs"))
 val catsV = "1.6.0"
 
 val kindProjectorV = "0.9.10"
-val betterMonadicForV = "0.3.0-M4"
+val betterMonadicForV = "0.3.0"
 
 
 lazy val contributors = Seq(
