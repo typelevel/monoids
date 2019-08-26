@@ -19,4 +19,6 @@ trait MonoidsArbitraries {
     Arbitrary(Arbitrary.arbitrary[A].map(Product(_)))
   implicit def sumArbitrary[A: Arbitrary]: Arbitrary[Sum[A]] =
     Arbitrary(Arbitrary.arbitrary[A].map(Sum(_)))
+  implicit def xorArbitrary[A: Arbitrary]: Arbitrary[Xor[A]] =
+    Arbitrary(Arbitrary.arbitrary[Set[A]].map(Xor(_)))
 }
