@@ -6,7 +6,7 @@ import cats.kernel.laws.discipline._
 
 class AnyTests extends CatsSuite with MonoidsArbitraries {
   checkAll("Any", OrderTests[Any].order)
-  checkAll("Any", CommutativeMonoidTests[Any].commutativeMonoid)
+  checkAll("Any", BoundedSemilatticeTests[Any].boundedSemilattice)
   
   test("show"){
     Any(true).show shouldEqual "Any(true)"
