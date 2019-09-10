@@ -23,7 +23,7 @@ lazy val docs = project.in(file("docs"))
   .enablePlugins(MicrositesPlugin)
   .enablePlugins(TutPlugin)
 
-val catsV = "1.6.1"
+val catsV = "2.0.0"
 
 val kindProjectorV = "0.10.3"
 val betterMonadicForV = "0.3.1"
