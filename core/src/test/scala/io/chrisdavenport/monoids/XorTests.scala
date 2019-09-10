@@ -9,7 +9,7 @@ import cats.laws.discipline._
 class XorTests extends CatsSuite with MonoidsArbitraries {
   checkAll("Xor", EqTests[Xor[Int]].eqv)
   checkAll("Xor", CommutativeGroupTests[Xor[Int]].commutativeGroup)
-  checkAll("Xor", MonoidKTests[Xor].monoidK)
+  checkAll("Xor", MonoidKTests[Xor].monoidK[Int])
   checkAll("Xor", UnorderedTraverseTests[Xor].unorderedTraverse[Int, Int, Int, Option, Option])
 
   test("show"){

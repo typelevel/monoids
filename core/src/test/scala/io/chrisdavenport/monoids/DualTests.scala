@@ -9,7 +9,7 @@ import cats.laws.discipline._
 class DualTests extends CatsSuite with MonoidsArbitraries {
   checkAll("Dual", OrderTests[Dual[Int]].order)
   checkAll("Dual", MonoidTests[Dual[Int]].monoid)
-  checkAll("Dual", MonadTests[Dual].monad)
+  checkAll("Dual", MonadTests[Dual].monad[Int, Int, Int])
   checkAll("Dual", NonEmptyTraverseTests[Dual].nonEmptyTraverse[Option, Int, Int, Int, Int, Option, Option])
   checkAll("Dual", DistributiveTests[Dual].distributive[Int, Int, Int, Option, Id])
 

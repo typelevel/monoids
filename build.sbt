@@ -24,6 +24,7 @@ lazy val docs = project.in(file("docs"))
   .enablePlugins(TutPlugin)
 
 val catsV = "2.0.0"
+val catsTestKitV = "1.0.0-M1"
 
 val kindProjectorV = "0.10.3"
 val betterMonadicForV = "0.3.1"
@@ -38,14 +39,14 @@ lazy val commonSettings = Seq(
   organization := "io.chrisdavenport",
 
   scalaVersion := "2.12.8",
-  crossScalaVersions := Seq(scalaVersion.value, "2.11.12"),
+  crossScalaVersions := Seq("2.13.0", scalaVersion.value, "2.11.12"),
   scalacOptions ++= Seq("-Yrangepos", "-language:higherKinds"),
 
   addCompilerPlugin("org.typelevel" % "kind-projector" % kindProjectorV cross CrossVersion.binary),
   addCompilerPlugin("com.olegpy" %% "better-monadic-for" % betterMonadicForV),
   libraryDependencies ++= Seq(
     "org.typelevel"               %%% "cats-core"                  % catsV,
-    "org.typelevel"               %%% "cats-testkit"               % catsV       % Test
+    "org.typelevel"               %%% "cats-testkit-scalatest"     % catsTestKitV  % Test
   )
 )
 

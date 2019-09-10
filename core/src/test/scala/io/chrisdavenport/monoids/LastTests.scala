@@ -9,8 +9,8 @@ import cats.laws.discipline._
 class LastTests extends CatsSuite with MonoidsArbitraries {
   checkAll("Last", OrderTests[Last[Int]].order)
   checkAll("Last", MonoidTests[Last[Int]].monoid)
-  checkAll("Last", MonadTests[Last].monad)
-  checkAll("Last", AlternativeTests[Last].alternative)
+  checkAll("Last", MonadTests[Last].monad[Int, Int, Int])
+  checkAll("Last", AlternativeTests[Last].alternative[Int, Int, Int])
   checkAll("Last", TraverseTests[Last].traverse[Int, Int, Int, Int,Option, Option])
 
   test("show"){
