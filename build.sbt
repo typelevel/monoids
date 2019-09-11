@@ -24,7 +24,7 @@ lazy val docs = project.in(file("docs"))
   .enablePlugins(TutPlugin)
 
 val catsV = "2.0.0"
-val catsTestKitV = "1.0.0-M1"
+val catsTestKitV = "1.0.0-M2"
 
 val kindProjectorV = "0.10.3"
 val betterMonadicForV = "0.3.1"
