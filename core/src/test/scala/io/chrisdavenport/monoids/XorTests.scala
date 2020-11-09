@@ -1,22 +1,23 @@
 package io.chrisdavenport.monoids
 
-// import cats._
-// import cats.implicits._
-import cats.tests.CatsSuite
+import cats.implicits._
 import cats.kernel.laws.discipline._
 import cats.laws.discipline._
 
-class XorTests extends CatsSuite with MonoidsArbitraries {
+class XorTests extends munit.DisciplineSuite with MonoidsArbitraries {
   checkAll("Xor", EqTests[Xor[Int]].eqv)
   checkAll("Xor", CommutativeGroupTests[Xor[Int]].commutativeGroup)
   checkAll("Xor", MonoidKTests[Xor].monoidK[Int])
-  checkAll("Xor", UnorderedTraverseTests[Xor].unorderedTraverse[Int, Int, Int, Option, Option])
+  checkAll(
+    "Xor",
+    UnorderedTraverseTests[Xor].unorderedTraverse[Int, Int, Int, Option, Option]
+  )
 
-  test("show"){
-    Xor(Set(1)).show shouldEqual "Xor(Set(1))"
+  test("show") {
+    assertEquals(Xor(Set(1)).show, "Xor(Set(1))")
   }
 
-  test("symmetric difference"){
-    Xor(Set(1, 2, 3)) |+| Xor(Set(3, 4)) shouldEqual Xor(Set(1, 2, 4))
+  test("symmetric difference") {
+    assertEquals(Xor(Set(1, 2, 3)) |+| Xor(Set(3, 4)), Xor(Set(1, 2, 4)))
   }
 }

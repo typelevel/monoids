@@ -9,3 +9,6 @@ tags
 # Metals
 .metals
 .bloop
+.bsp
+project/metals.sbt
+project/project
