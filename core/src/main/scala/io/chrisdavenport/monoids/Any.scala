@@ -8,8 +8,8 @@ final case class Any(getAny: Boolean) extends AnyVal
 object Any {
 
   def any[F[_]: Foldable](fa: F[Any]): Any = Any(fa.exists(_.getAny))
-  
-  implicit val anyMonoid: BoundedSemilattice[Any] = new BoundedSemilattice[Any]{
+
+  implicit val anyMonoid: BoundedSemilattice[Any] = new BoundedSemilattice[Any] {
     val empty: Any = Any(false)
     def combine(x: Any, y: Any): Any = Any(x.getAny || y.getAny)
   }

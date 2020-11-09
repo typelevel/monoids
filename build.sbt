@@ -1,34 +1,40 @@
 import sbtcrossproject.CrossPlugin.autoImport.{crossProject, CrossType}
 
-lazy val monoids = project.in(file("."))
-  .disablePlugins(MimaPlugin)
-  .settings(commonSettings, releaseSettings, skipOnPublishSettings)
-  .aggregate(coreJVM, coreJS)
+Global / onChangedBuildSource := ReloadOnSourceChanges
 
+lazy val monoids = project
+  .in(file("."))
+  .disablePlugins(MimaPlugin)
+  .settings(commonSettings, skipOnPublishSettings)
+  .aggregate(core.jvm, core.js)
 
 lazy val core = crossProject(JSPlatform, JVMPlatform)
   .crossType(CrossType.Pure)
   .in(file("core"))
-  .settings(commonSettings, releaseSettings, mimaSettings)
+  .settings(commonSettings, mimaSettings)
   .settings(
     name := "monoids"
   )
+  .jsSettings(
+    scalaJSLinkerConfig ~= (_.withModuleKind(ModuleKind.CommonJSModule))
+  )
 
-lazy val coreJVM = core.jvm
-lazy val coreJS = core.js
-
-lazy val docs = project.in(file("docs"))
-  .settings(commonSettings, releaseSettings, skipOnPublishSettings, micrositeSettings)
-  .dependsOn(coreJVM)
+lazy val docs = project
+  .in(file("docs"))
+  .settings(
+    commonSettings,
+    skipOnPublishSettings,
+    micrositeSettings
+  )
+  .dependsOn(core.jvm)
   .enablePlugins(MicrositesPlugin)
-  .enablePlugins(TutPlugin)
+  .enablePlugins(MdocPlugin)
+  .settings(mdocIn := sourceDirectory.value / "main" / "mdoc")
 
-val catsV = "2.0.0"
-val catsTestKitV = "1.0.0-M1"
+val catsV = "2.2.0"
 
-val kindProjectorV = "0.10.3"
+val kindProjectorV = "0.11.0"
 val betterMonadicForV = "0.3.1"
-
 
 lazy val contributors = Seq(
   "ChristopherDavenport" -> "Christopher Davenport"
@@ -37,81 +43,55 @@ lazy val contributors = Seq(
 // General Settings
 lazy val commonSettings = Seq(
   organization := "io.chrisdavenport",
-
-  scalaVersion := "2.12.8",
-  crossScalaVersions := Seq("2.13.0", scalaVersion.value, "2.11.12"),
+  scalaVersion := "2.13.3",
+  crossScalaVersions := Seq("2.12.11", scalaVersion.value),
   scalacOptions ++= Seq("-Yrangepos", "-language:higherKinds"),
-
-  addCompilerPlugin("org.typelevel" % "kind-projector" % kindProjectorV cross CrossVersion.binary),
+  addCompilerPlugin(
+    "org.typelevel" % "kind-projector" % kindProjectorV cross CrossVersion.full
+  ),
   addCompilerPlugin("com.olegpy" %% "better-monadic-for" % betterMonadicForV),
   libraryDependencies ++= Seq(
-    "org.typelevel"               %%% "cats-core"                  % catsV,
-    "org.typelevel"               %%% "cats-testkit-scalatest"     % catsTestKitV  % Test
+    "org.typelevel" %%% "cats-core"        % catsV,
+    "org.typelevel" %%% "cats-testkit"     % catsV    % Test,
+    "org.typelevel" %%% "discipline-munit" % "1.0.1"  % Test,
+    "org.scalameta" %%% "munit"            % "0.7.16" % Test
+  ),
+  testFrameworks += new TestFramework("munit.Framework")
+)
+
+inThisBuild(
+  List(
+    organization := "io.chrisdavenport",
+    homepage := Some(url("https://github.com/ChristopherDavenport/monoids")),
+    licenses += ("MIT", url("http://opensource.org/licenses/MIT")),
+    developers := {
+      (for ((username, name) <- contributors)
+        yield Developer(username, name, "", url(s"http://github.com/$username"))).toList
+    }
   )
 )
 
-lazy val releaseSettings = {
-  import ReleaseTransformations._
+// Not Used Currently
+lazy val mimaSettings = {
+  def mimaVersion(version: String) = {
+    VersionNumber(version) match {
+      case VersionNumber(Seq(major, minor, patch, _*), _, _) if patch.toInt > 0 =>
+        Some(s"${major}.${minor}.${patch.toInt - 1}")
+      case _ =>
+        None
+    }
+  }
+
   Seq(
-    releaseCrossBuild := true,
-    releaseProcess := Seq[ReleaseStep](
-      checkSnapshotDependencies,
-      inquireVersions,
-      runClean,
-      runTest,
-      setReleaseVersion,
-      commitReleaseVersion,
-      tagRelease,
-      // For non cross-build projects, use releaseStepCommand("publishSigned")
-      releaseStepCommandAndRemaining("+publishSigned"),
-      setNextVersion,
-      commitNextVersion,
-      releaseStepCommand("sonatypeReleaseAll"),
-      pushChanges
-    ),
-    publishTo := {
-      val nexus = "https://oss.sonatype.org/"
-      if (isSnapshot.value)
-        Some("snapshots" at nexus + "content/repositories/snapshots")
-      else
-        Some("releases" at nexus + "service/local/staging/deploy/maven2")
-    },
-    credentials ++= (
-      for {
-        username <- Option(System.getenv().get("SONATYPE_USERNAME"))
-        password <- Option(System.getenv().get("SONATYPE_PASSWORD"))
-      } yield
-        Credentials(
-          "Sonatype Nexus Repository Manager",
-          "oss.sonatype.org",
-          username,
-          password
-        )
-    ).toSeq,
-    publishArtifact in Test := false,
-    releasePublishArtifactsAction := PgpKeys.publishSigned.value,
-    scmInfo := Some(
-      ScmInfo(
-        url("https://github.com/ChristopherDavenport/monoids"),
-        "git@github.com:ChristopherDavenport/monoids.git"
-      )
-    ),
-    homepage := Some(url("https://github.com/ChristopherDavenport/monoids")),
-    licenses += ("MIT", url("http://opensource.org/licenses/MIT")),
-    publishMavenStyle := true,
-    pomIncludeRepository := { _ =>
-      false
-    },
-    pomExtra := {
-      <developers>
-        {for ((username, name) <- contributors) yield
-        <developer>
-          <id>{username}</id>
-          <name>{name}</name>
-          <url>http://github.com/{username}</url>
-        </developer>
-        }
-      </developers>
+    mimaFailOnProblem := mimaVersion(version.value).isDefined,
+    mimaFailOnNoPrevious in ThisBuild := false,
+    mimaPreviousArtifacts := (mimaVersion(version.value) map {
+      organization.value % s"${moduleName.value}_${scalaBinaryVersion.value}" % _
+    }).toSet,
+    mimaBinaryIssueFilters ++= {
+      import com.typesafe.tools.mima.core._
+      import com.typesafe.tools.mima.core.ProblemFilters._
+      Seq()
     }
   )
 }
@@ -147,69 +127,33 @@ lazy val micrositeSettings = {
       "-Ywarn-unused:imports",
       "-Xlint:-missing-interpolator,_"
     ),
-    libraryDependencies += "com.47deg" %% "github4s" % "0.20.0",
     micrositePushSiteWith := GitHub4s,
     micrositeGithubToken := sys.env.get("GITHUB_TOKEN"),
     micrositeExtraMdFiles := Map(
-        file("CHANGELOG.md")        -> ExtraMdFileConfig("changelog.md", "page", Map("title" -> "changelog", "section" -> "changelog", "position" -> "100")),
-        file("CODE_OF_CONDUCT.md")  -> ExtraMdFileConfig("code-of-conduct.md",   "page", Map("title" -> "code of conduct",   "section" -> "code of conduct",   "position" -> "101")),
-        file("LICENSE")             -> ExtraMdFileConfig("license.md",   "page", Map("title" -> "license",   "section" -> "license",   "position" -> "102"))
+      file("CHANGELOG.md") -> ExtraMdFileConfig(
+        "changelog.md",
+        "page",
+        Map(
+          "title" -> "changelog",
+          "section" -> "changelog",
+          "position" -> "100"
+        )
+      ),
+      file("CODE_OF_CONDUCT.md") -> ExtraMdFileConfig(
+        "code-of-conduct.md",
+        "page",
+        Map(
+          "title" -> "code of conduct",
+          "section" -> "code of conduct",
+          "position" -> "101"
+        )
+      ),
+      file("LICENSE") -> ExtraMdFileConfig(
+        "license.md",
+        "page",
+        Map("title" -> "license", "section" -> "license", "position" -> "102")
+      )
     )
-  )
-}
-
-lazy val mimaSettings = {
-  import sbtrelease.Version
-
-  def semverBinCompatVersions(major: Int, minor: Int, patch: Int): Set[(Int, Int, Int)] = {
-    val majorVersions: List[Int] = 
-      if (major == 0 && minor == 0) List()
-      else List(major)
-    val minorVersions : List[Int] = 
-      if (major >= 1) Range(0, minor).inclusive.toList
-      else List(minor)
-    def patchVersions(currentMinVersion: Int): List[Int] = 
-      if (minor == 0 && patch == 0) List.empty[Int]
-      else if (currentMinVersion != minor) List(0)
-      else Range(0, patch - 1).inclusive.toList
-
-    val versions = for {
-      maj <- majorVersions
-      min <- minorVersions
-      pat <- patchVersions(min)
-    } yield (maj, min, pat)
-    versions.toSet
-  }
-
-  def mimaVersions(version: String): Set[String] = {
-    Version(version) match {
-      case Some(Version(major, Seq(minor, patch), _)) =>
-        semverBinCompatVersions(major.toInt, minor.toInt, patch.toInt)
-          .map{case (maj, min, pat) => maj.toString + "." + min.toString + "." + pat.toString}
-      case _ =>
-        Set.empty[String]
-    }
-  }
-  // Safety Net For Exclusions
-  lazy val excludedVersions: Set[String] = Set()
-
-  // Safety Net for Inclusions
-  lazy val extraVersions: Set[String] = Set()
-
-  Seq(
-    mimaFailOnNoPrevious := false,
-    mimaFailOnProblem := mimaVersions(version.value).toList.headOption.isDefined,
-    mimaPreviousArtifacts := (mimaVersions(version.value) ++ extraVersions)
-      .filterNot(excludedVersions.contains(_))
-      .map{v => 
-        val moduleN = moduleName.value + "_" + scalaBinaryVersion.value.toString
-        organization.value % moduleN % v
-      },
-    mimaBinaryIssueFilters ++= {
-      import com.typesafe.tools.mima.core._
-      import com.typesafe.tools.mima.core.ProblemFilters._
-      Seq()
-    }
   )
 }
 
