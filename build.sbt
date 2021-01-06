@@ -54,7 +54,7 @@ lazy val commonSettings = Seq(
     "org.typelevel" %%% "cats-core"        % catsV,
     "org.typelevel" %%% "cats-testkit"     % catsV    % Test,
     "org.typelevel" %%% "discipline-munit" % "1.0.1"  % Test,
-    "org.scalameta" %%% "munit"            % "0.7.16" % Test
+    "org.scalameta" %%% "munit"            % "0.7.20" % Test
   ),
   testFrameworks += new TestFramework("munit.Framework")
 )
