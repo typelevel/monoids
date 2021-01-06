@@ -31,9 +31,9 @@ lazy val docs = project
   .enablePlugins(MdocPlugin)
   .settings(mdocIn := sourceDirectory.value / "main" / "mdoc")
 
-val catsV = "2.2.0"
+val catsV = "2.3.1"
 
-val kindProjectorV = "0.11.0"
+val kindProjectorV = "0.11.2"
 val betterMonadicForV = "0.3.1"
 
 lazy val contributors = Seq(
@@ -53,8 +53,7 @@ lazy val commonSettings = Seq(
   libraryDependencies ++= Seq(
     "org.typelevel" %%% "cats-core"        % catsV,
     "org.typelevel" %%% "cats-testkit"     % catsV    % Test,
-    "org.typelevel" %%% "discipline-munit" % "1.0.1"  % Test,
-    "org.scalameta" %%% "munit"            % "0.7.16" % Test
+    "org.typelevel" %%% "discipline-munit" % "1.0.4"  % Test
   ),
   testFrameworks += new TestFramework("munit.Framework")
 )
