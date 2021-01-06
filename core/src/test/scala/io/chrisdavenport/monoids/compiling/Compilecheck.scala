@@ -14,7 +14,7 @@ object Compilecheck {
   val firstTraverse = 1.pure[First].traverse(List(_))
   val firstFunctor = 1.pure[First].map(_ + 1)
 
-  val sum = List(1,2,3,4).foldMap(_.pure[Sum])
+  val sum = List(1, 2, 3, 4).foldMap(_.pure[Sum])
   val monoidKFirst = First(1.some) <+> First(None)
 
   val all: Boolean = List(true, false, true).foldMap(Any(_)).getAny
