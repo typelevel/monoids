@@ -73,7 +73,8 @@ lazy val commonSettings = Seq(
     "org.typelevel" %%% "cats-testkit"     % catsV   % Test,
     "org.typelevel" %%% "discipline-munit" % "1.0.4" % Test
   ),
-  testFrameworks += new TestFramework("munit.Framework")
+  testFrameworks += new TestFramework("munit.Framework"),
+  Compile / doc / sources := { if (isDotty.value) Seq() else (Compile / doc / sources).value }
 )
 
 inThisBuild(
