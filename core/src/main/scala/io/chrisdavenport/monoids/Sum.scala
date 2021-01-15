@@ -3,7 +3,8 @@ package io.chrisdavenport.monoids
 import cats._
 import cats.kernel.CommutativeMonoid
 import cats.implicits._
-final case class Sum[A](getSum: A) extends AnyVal
+
+final case class Sum[A](getSum: A)
 object Sum extends SumInstances {
   def sum[F[_]: Foldable, A](fa: F[A])(implicit A: Monoid[Sum[A]]): A = fa.foldMap(Sum(_)).getSum
 }

@@ -3,7 +3,7 @@ package io.chrisdavenport.monoids
 import cats._
 import cats.implicits._
 
-final case class Dual[A](getDual: A) extends AnyVal
+final case class Dual[A](getDual: A)
 object Dual extends DualInstances
 
 private[monoids] trait DualInstances extends DualInstances1 {
