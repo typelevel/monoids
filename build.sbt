@@ -63,13 +63,15 @@ lazy val commonSettings = Seq(
     if (isDotty.value) Nil
     else
       Seq(
-        compilerPlugin(("org.typelevel" %% "kind-projector" % kindProjectorV).cross(CrossVersion.full)),
+        compilerPlugin(
+          ("org.typelevel" %% "kind-projector" % kindProjectorV).cross(CrossVersion.full)
+        )
       )
   ),
   libraryDependencies ++= Seq(
     "org.typelevel" %%% "cats-core"        % catsV,
-    "org.typelevel" %%% "cats-testkit"     % catsV    % Test,
-    "org.typelevel" %%% "discipline-munit" % "1.0.4"  % Test
+    "org.typelevel" %%% "cats-testkit"     % catsV   % Test,
+    "org.typelevel" %%% "discipline-munit" % "1.0.4" % Test
   ),
   testFrameworks += new TestFramework("munit.Framework")
 )
