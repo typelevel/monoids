@@ -43,6 +43,16 @@ ThisBuild / crossScalaVersions := Seq(Scala212, Scala213) ++ Scala3
 ThisBuild / scalaVersion := Scala213
 ThisBuild / organization := "org.typelevel"
 
+ThisBuild / githubWorkflowPublishTargetBranches := Seq()
+ThisBuild / githubWorkflowJavaVersions := Seq("adopt@1.8", "adopt@1.11", "adopt@1.15")
+ThisBuild / githubWorkflowBuild := Seq(
+  WorkflowStep
+    .Sbt(List("scalafmtCheckAll", "scalafmtSbtCheck"), name = Some("Check formatting")),
+  WorkflowStep.Sbt(List("test:compile"), name = Some("Compile")),
+  WorkflowStep.Sbt(List("test"), name = Some("Run tests")),
+  WorkflowStep.Sbt(List("doc"), name = Some("Build docs"))
+)
+
 lazy val contributors = Seq(
   "ChristopherDavenport" -> "Christopher Davenport"
 )
