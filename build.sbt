@@ -31,7 +31,7 @@ lazy val docs = project
   .enablePlugins(MdocPlugin)
   .settings(mdocIn := sourceDirectory.value / "main" / "mdoc")
 
-val catsV = "2.4.1"
+val catsV = "2.4.2"
 
 val kindProjectorV = "0.11.3"
 val betterMonadicForV = "0.3.1"
