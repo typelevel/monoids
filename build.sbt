@@ -43,7 +43,7 @@ lazy val contributors = Seq(
 // General Settings
 lazy val commonSettings = Seq(
   organization := "io.chrisdavenport",
-  scalaVersion := "2.13.3",
+  scalaVersion := "2.13.5",
   crossScalaVersions := Seq("2.12.11", scalaVersion.value),
   scalacOptions ++= Seq("-Yrangepos", "-language:higherKinds"),
   addCompilerPlugin(
