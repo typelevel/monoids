@@ -53,7 +53,7 @@ lazy val commonSettings = Seq(
   libraryDependencies ++= Seq(
     "org.typelevel" %%% "cats-core"        % catsV,
     "org.typelevel" %%% "cats-testkit"     % catsV    % Test,
-    "org.typelevel" %%% "discipline-munit" % "1.0.6"  % Test
+    "org.typelevel" %%% "discipline-munit" % "1.0.7"  % Test
   ),
   testFrameworks += new TestFramework("munit.Framework")
 )
