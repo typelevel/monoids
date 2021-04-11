@@ -23,13 +23,13 @@ jobs:
           java-version: ${{ matrix.java }}
       - uses: coursier/cache-action@v3
       - name: Compile
-        run: csbt ++$SCALA_VERSION test:compile
+        run: sbt ++$SCALA_VERSION test:compile
       #- name: Check compatibility
-      #  run: csbt ++$SCALA_VERSION mimaReportBinaryIssues
+      #  run: sbt ++$SCALA_VERSION mimaReportBinaryIssues
       - name: Test
-        run: csbt ++$SCALA_VERSION test
+        run: sbt ++$SCALA_VERSION test
       - name: Scaladoc
-        run: csbt ++$SCALA_VERSION doc
+        run: sbt ++$SCALA_VERSION doc
   docs:
     name: Doc Site
     runs-on: ubuntu-latest
@@ -46,4 +46,4 @@ jobs:
           gem install bundler
           bundle install --gemfile=docs/Gemfile
       - name: Build project site
-        run: csbt ++$SCALA_VERSION docs/makeMicrosite
+        run: sbt ++$SCALA_VERSION docs/makeMicrosite
