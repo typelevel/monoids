@@ -31,7 +31,7 @@ lazy val docs = project
   .enablePlugins(MdocPlugin)
   .settings(mdocIn := sourceDirectory.value / "main" / "mdoc")
 
-val catsV = "2.6.0"
+val catsV = "2.6.1"
 
 val kindProjectorV = "0.11.3"
 val betterMonadicForV = "0.3.1"
@@ -53,7 +53,7 @@ lazy val commonSettings = Seq(
   libraryDependencies ++= Seq(
     "org.typelevel" %%% "cats-core"        % catsV,
     "org.typelevel" %%% "cats-testkit"     % catsV    % Test,
-    "org.typelevel" %%% "discipline-munit" % "1.0.8"  % Test
+    "org.typelevel" %%% "discipline-munit" % "1.0.9"  % Test
   ),
   testFrameworks += new TestFramework("munit.Framework")
 )
@@ -116,15 +116,6 @@ lazy val micrositeSettings = {
       "gray-light" -> "#E5E5E6",
       "gray-lighter" -> "#F4F3F4",
       "white-color" -> "#FFFFFF"
-    ),
-    fork in tut := true,
-    scalacOptions in Tut --= Seq(
-      "-Xfatal-warnings",
-      "-Ywarn-unused-import",
-      "-Ywarn-numeric-widen",
-      "-Ywarn-dead-code",
-      "-Ywarn-unused:imports",
-      "-Xlint:-missing-interpolator,_"
     ),
     micrositePushSiteWith := GitHub4s,
     micrositeGithubToken := sys.env.get("GITHUB_TOKEN"),
