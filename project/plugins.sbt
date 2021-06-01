@@ -1,4 +1,4 @@
-addSbtPlugin("io.github.davidgregory084" % "sbt-tpolecat"             % "0.1.19")
+addSbtPlugin("io.github.davidgregory084" % "sbt-tpolecat"             % "0.1.20")
 addSbtPlugin("com.typesafe"              % "sbt-mima-plugin"          % "0.9.2")
 addSbtPlugin("com.47deg"                 % "sbt-microsites"           % "1.3.4")
 addSbtPlugin("com.typesafe.sbt"          % "sbt-ghpages"              % "0.6.3")
