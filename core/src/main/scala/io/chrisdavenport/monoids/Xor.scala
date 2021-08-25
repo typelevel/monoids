@@ -4,6 +4,8 @@ import cats._
 import cats.kernel.{CommutativeGroup, CommutativeMonoid}
 import cats.implicits._
 
+import scala.annotation.nowarn
+
 final case class Xor[A](getXor: Set[A]) extends AnyVal
 object Xor extends XorInstances
 
@@ -19,6 +21,7 @@ private[monoids] abstract class XorInstances {
   implicit def xorShow[A: Show]: Show[Xor[A]] =
     Show.show[Xor[A]](xorA => show"Xor(${xorA.getXor})")
 
+  @nowarn
   implicit def xorEq[A: Eq]: Eq[Xor[A]] = Eq.by(_.getXor)
 
   implicit val xorInstances: MonoidK[Xor] with UnorderedTraverse[Xor] =
