@@ -2,7 +2,7 @@ name: CI
 on: [push, pull_request]
 env:
   CI: true
-  SCALA_VERSION: 2.12.12 # Used only for Doc Site
+  SCALA_VERSION: 2.12.14 # Used only for Doc Site
 jobs:
   validate:
     name: Scala ${{ matrix.scala }}, Java ${{ matrix.java }}
