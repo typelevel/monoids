@@ -1,4 +1,4 @@
-# monoids [![Build Status](https://travis-ci.com/ChristopherDavenport/monoids.svg?branch=master)](https://travis-ci.com/ChristopherDavenport/monoids) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/monoids_2.12/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/monoids_2.12)
+# monoids [![Build Status](https://travis-ci.com/ChristopherDavenport/monoids.svg?branch=main)](https://travis-ci.com/ChristopherDavenport/monoids) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/monoids_2.12/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/monoids_2.12)
 
 
 Monoids is a library for some generic Monoids that are very useful.
