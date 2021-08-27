@@ -52,8 +52,8 @@ lazy val commonSettings = Seq(
   addCompilerPlugin("com.olegpy" %% "better-monadic-for" % betterMonadicForV),
   libraryDependencies ++= Seq(
     "org.typelevel" %%% "cats-core"        % catsV,
-    "org.typelevel" %%% "cats-testkit"     % catsV    % Test,
-    "org.typelevel" %%% "discipline-munit" % "1.0.9"  % Test
+    "org.typelevel" %%% "cats-testkit"     % catsV   % Test,
+    "org.typelevel" %%% "discipline-munit" % "1.0.9" % Test
   ),
   testFrameworks += new TestFramework("munit.Framework")
 )
@@ -75,7 +75,7 @@ lazy val mimaSettings = {
   def mimaVersion(version: String) = {
     VersionNumber(version) match {
       case VersionNumber(Seq(major, minor, patch, _*), _, _) if patch.toInt > 0 =>
-        Some(s"${major}.${minor}.${patch.toInt - 1}")
+        Some(s"$major.$minor.${patch.toInt - 1}")
       case _ =>
         None
     }
