@@ -23,7 +23,7 @@ jobs:
           java-version: ${{ matrix.java }}
       - uses: coursier/cache-action@v3
       - name: Compile
-        run: sbt ++$SCALA_VERSION test:compile
+        run: sbt ++$SCALA_VERSION Test/compile
       #- name: Check compatibility
       #  run: sbt ++$SCALA_VERSION mimaReportBinaryIssues
       - name: Test
