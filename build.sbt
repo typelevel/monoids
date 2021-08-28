@@ -83,7 +83,7 @@ lazy val mimaSettings = {
 
   Seq(
     mimaFailOnProblem := mimaVersion(version.value).isDefined,
-    mimaFailOnNoPrevious in ThisBuild := false,
+    ThisBuild / mimaFailOnNoPrevious := false,
     mimaPreviousArtifacts := (mimaVersion(version.value) map {
       organization.value % s"${moduleName.value}_${scalaBinaryVersion.value}" % _
     }).toSet,
@@ -148,7 +148,7 @@ lazy val micrositeSettings = {
 }
 
 lazy val skipOnPublishSettings = Seq(
-  skip in publish := true,
+  publish / skip := true,
   publish := (()),
   publishLocal := (()),
   publishArtifact := false,
