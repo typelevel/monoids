@@ -48,11 +48,26 @@ jobs:
             ~/Library/Caches/Coursier/v1
           key: ${{ runner.os }}-sbt-cache-v2-${{ hashFiles('**/*.sbt') }}-${{ hashFiles('project/build.properties') }}
 
+      - name: Setup Ruby
+        if: matrix.scala == '2.12.14'
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.6.0
+
+      - name: Install microsite dependencies
+        if: matrix.scala == '2.12.14'
+        run: |
+          gem install saas
+          gem install jekyll -v 4.2.0
+
       - name: Check that workflows are up to date
         run: sbt ++${{ matrix.scala }} githubWorkflowCheck
 
       - name: Check formatting
         run: sbt ++${{ matrix.scala }} scalafmtCheckAll scalafmtSbtCheck
+
+      - name: Check binary issues
+        run: sbt ++${{ matrix.scala }} mimaReportBinaryIssues
 
       - name: Compile
         run: sbt ++${{ matrix.scala }} Test/compile
@@ -60,5 +75,9 @@ jobs:
       - name: Run tests
         run: sbt ++${{ matrix.scala }} test
 
-      - name: Build docs
+      - name: Build the Scaladoc
         run: sbt ++${{ matrix.scala }} doc
+
+      - name: Build the Microsite
+        if: matrix.scala == '2.12.14'
+        run: sbt ++${{ matrix.scala }} docs/makeMicrosite
