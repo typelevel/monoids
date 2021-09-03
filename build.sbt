@@ -8,12 +8,14 @@ val Scala213 = "2.13.6"
 val Scala212Cond = s"matrix.scala == '$Scala212'"
 
 def rubySetupSteps(cond: Option[String]) = Seq(
-  WorkflowStep.Use(UseRef.Public("ruby", "setup-ruby", "v1"),
+  WorkflowStep.Use(
+    UseRef.Public("ruby", "setup-ruby", "v1"),
     name = Some("Setup Ruby"),
     params = Map("ruby-version" -> "2.6.0"),
     cond = cond
   ),
-  WorkflowStep.Run(List("gem install saas", "gem install jekyll -v 4.2.0"),
+  WorkflowStep.Run(
+    List("gem install saas", "gem install jekyll -v 4.2.0"),
     name = Some("Install microsite dependencies"),
     cond = cond
   )
@@ -28,7 +30,11 @@ ThisBuild / githubWorkflowBuild := Seq(
   WorkflowStep.Sbt(List("Test/compile"), name = Some("Compile")),
   WorkflowStep.Sbt(List("test"), name = Some("Run tests")),
   WorkflowStep.Sbt(List("doc"), name = Some("Build the Scaladoc")),
-  WorkflowStep.Sbt(List("docs/makeMicrosite"), name = Some("Build the Microsite"), cond = Some(Scala212Cond))
+  WorkflowStep.Sbt(
+    List("docs/makeMicrosite"),
+    name = Some("Build the Microsite"),
+    cond = Some(Scala212Cond)
+  )
 )
 ThisBuild / githubWorkflowBuildPreamble ++=
   rubySetupSteps(Some(Scala212Cond))
