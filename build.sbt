@@ -2,6 +2,15 @@ import sbtcrossproject.CrossPlugin.autoImport.{crossProject, CrossType}
 
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
+ThisBuild / githubWorkflowPublishTargetBranches := Seq()
+ThisBuild / githubWorkflowBuild := Seq(
+  WorkflowStep
+    .Sbt(List("scalafmtCheckAll", "scalafmtSbtCheck"), name = Some("Check formatting")),
+  WorkflowStep.Sbt(List("Test/compile"), name = Some("Compile")),
+  WorkflowStep.Sbt(List("test"), name = Some("Run tests")),
+  WorkflowStep.Sbt(List("doc"), name = Some("Build docs"))
+)
+
 lazy val monoids = project
   .in(file("."))
   .disablePlugins(MimaPlugin)
