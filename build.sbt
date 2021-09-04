@@ -7,6 +7,9 @@ val Scala213 = "2.13.6"
 
 val Scala212Cond = s"matrix.scala == '$Scala212'"
 
+ThisBuild / scalaVersion := Scala213
+ThisBuild / crossScalaVersions := Seq(Scala212, Scala213)
+
 def rubySetupSteps(cond: Option[String]) = Seq(
   WorkflowStep.Use(
     UseRef.Public("ruby", "setup-ruby", "v1"),
@@ -80,8 +83,6 @@ lazy val contributors = Seq(
 // General Settings
 lazy val commonSettings = Seq(
   organization := "io.chrisdavenport",
-  scalaVersion := Scala213,
-  crossScalaVersions := Seq(Scala212, scalaVersion.value),
   scalacOptions ++= Seq("-Yrangepos", "-language:higherKinds"),
   addCompilerPlugin(
     "org.typelevel" % "kind-projector" % kindProjectorV cross CrossVersion.full
