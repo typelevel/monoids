@@ -8,6 +8,9 @@ val Scala3 = "3.0.2"
 
 val Scala212Cond = s"matrix.scala == '$Scala212'"
 
+ThisBuild / scalaVersion := Scala213
+ThisBuild / crossScalaVersions := Seq(Scala212, Scala213, Scala3)
+
 def rubySetupSteps(cond: Option[String]) = Seq(
   WorkflowStep.Use(
     UseRef.Public("ruby", "setup-ruby", "v1"),
@@ -95,8 +98,6 @@ lazy val commonSettings = Seq(
   organization := "io.chrisdavenport",
   Compile / unmanagedSourceDirectories ++= scalaVersionSpecificFolders("main", baseDirectory.value, scalaVersion.value),
   Test / unmanagedSourceDirectories ++= scalaVersionSpecificFolders("test", baseDirectory.value, scalaVersion.value),
-  scalaVersion := Scala213,
-  crossScalaVersions := Seq(Scala212, Scala213, Scala3),
   scalacOptions ++= (
     if (ScalaArtifacts.isScala3(scalaVersion.value)) Nil
     else Seq("-Yrangepos", "-language:higherKinds")
