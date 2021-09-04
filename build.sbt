@@ -4,6 +4,7 @@ Global / onChangedBuildSource := ReloadOnSourceChanges
 
 val Scala212 = "2.12.14"
 val Scala213 = "2.13.6"
+val Scala3 = "3.0.2"
 
 val Scala212Cond = s"matrix.scala == '$Scala212'"
 
@@ -77,16 +78,38 @@ lazy val contributors = Seq(
   "ChristopherDavenport" -> "Christopher Davenport"
 )
 
+def scalaVersionSpecificFolders(srcName: String, srcBaseDir: java.io.File, scalaVersion: String) = {
+  def extraDirs(suffix: String) =
+    List(CrossType.Pure, CrossType.Full)
+      .flatMap(_.sharedSrcDir(srcBaseDir, srcName).toList.map(f => file(f.getPath + suffix)))
+  CrossVersion.partialVersion(scalaVersion) match {
+    case Some((2, y))     => extraDirs("-2.x") ++ (if (y >= 13) extraDirs("-2.13+") else Nil)
+    case Some((0 | 3, _)) => extraDirs("-2.13+") ++ extraDirs("-3.x")
+    case _                => Nil
+  }
+}
+
 // General Settings
 lazy val commonSettings = Seq(
   organization := "io.chrisdavenport",
+  Compile / unmanagedSourceDirectories ++= scalaVersionSpecificFolders("main", baseDirectory.value, scalaVersion.value),
+  Test / unmanagedSourceDirectories ++= scalaVersionSpecificFolders("test", baseDirectory.value, scalaVersion.value),
   scalaVersion := Scala213,
-  crossScalaVersions := Seq(Scala212, scalaVersion.value),
-  scalacOptions ++= Seq("-Yrangepos", "-language:higherKinds"),
-  addCompilerPlugin(
-    "org.typelevel" % "kind-projector" % kindProjectorV cross CrossVersion.full
+  crossScalaVersions := Seq(Scala212, Scala213, Scala3),
+  scalacOptions ++= (
+    if (ScalaArtifacts.isScala3(scalaVersion.value)) Nil
+    else Seq("-Yrangepos", "-language:higherKinds")
   ),
-  addCompilerPlugin("com.olegpy" %% "better-monadic-for" % betterMonadicForV),
+  libraryDependencies ++= (
+    if (ScalaArtifacts.isScala3(scalaVersion.value)) Nil
+    else
+      Seq (
+        compilerPlugin(
+      ("org.typelevel" %% "kind-projector" % kindProjectorV).cross(CrossVersion.full)
+    ),
+        compilerPlugin("com.olegpy" %% "better-monadic-for" % betterMonadicForV),
+      )
+  ),
   libraryDependencies ++= Seq(
     "org.typelevel" %%% "cats-core"        % catsV,
     "org.typelevel" %%% "cats-testkit"     % catsV   % Test,
