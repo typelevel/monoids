@@ -33,7 +33,7 @@ lazy val docs = project
 
 val catsV = "2.6.1"
 
-val kindProjectorV = "0.13.1"
+val kindProjectorV = "0.13.2"
 val betterMonadicForV = "0.3.1"
 
 lazy val contributors = Seq(
