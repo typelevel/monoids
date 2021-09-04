@@ -2,7 +2,7 @@
 layout: home
 
 ---
-# monoids [![Build Status](https://travis-ci.com/ChristopherDavenport/monoids.svg?branch=main)](https://travis-ci.com/ChristopherDavenport/monoids) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/monoids_2.12/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/monoids_2.12)
+# monoids ![Continuous Integration](https://github.com/typelevel/monoids/workflows/Continuous%20Integration/badge.svg) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/monoids_2.13/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/monoids_2.13)
 
 Monoids is a library for some generic Monoids that are very useful.
 
@@ -23,7 +23,7 @@ add the following dependencies to your `build.sbt` depending on your needs:
 
 ```scala
 libraryDependencies ++= Seq(
-  "io.chrisdavenport" %% "monoids"     % "<version>"
+  "io.chrisdavenport" %% "monoids" % "<version>"
 )
 ```
 

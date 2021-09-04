@@ -1,4 +1,4 @@
-# monoids ![Continuous Integration](https://github.com/typelevel/monoids/workflows/Continuous%20Integration/badge.svg) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/monoids_2.12/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/monoids_2.12)
+# monoids ![Continuous Integration](https://github.com/typelevel/monoids/workflows/Continuous%20Integration/badge.svg) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/monoids_2.13/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/monoids_2.13)
 
 
 Monoids is a library for some generic Monoids that are very useful.
@@ -22,6 +22,6 @@ To use this project in an existing SBT project with Scala 2.11 or a later versio
 
 ```scala
 libraryDependencies ++= Seq(
-  "io.chrisdavenport" %% "monoids"     % "<version>"
+  "io.chrisdavenport" %% "monoids" % "<version>"
 )
 ```
