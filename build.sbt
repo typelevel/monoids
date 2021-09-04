@@ -30,7 +30,11 @@ ThisBuild / githubWorkflowPublishTargetBranches := Seq()
 ThisBuild / githubWorkflowJavaVersions := Seq("adopt@1.8", "adopt@1.11", "adopt@1.16")
 ThisBuild / githubWorkflowBuild := Seq(
   WorkflowStep
-    .Sbt(List("scalafmtCheckAll", "scalafmtSbtCheck"), name = Some("Check formatting"), cond = Some(isNotScala3Cond)),
+    .Sbt(
+      List("scalafmtCheckAll", "scalafmtSbtCheck"),
+      name = Some("Check formatting"),
+      cond = Some(isNotScala3Cond)
+    ),
   WorkflowStep.Sbt(List("mimaReportBinaryIssues"), name = Some("Check binary issues")),
   WorkflowStep.Sbt(List("Test/compile"), name = Some("Compile")),
   WorkflowStep.Sbt(List("test"), name = Some("Run tests")),
