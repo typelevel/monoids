@@ -19,7 +19,7 @@ private[monoids] trait DualInstances extends DualInstances1 {
       Dual(Monoid[A].combine(y.getDual, x.getDual))
   }
   implicit def dualShow[A: Show]: Show[Dual[A]] =
-    Show.show[Dual[A]](dualA => show"Dual(${dualA.getDual})")
+    Show.show[Dual[A]](dualA => s"Dual(${dualA.getDual})")
 
   implicit def dualOrder[A: Order]: Order[Dual[A]] =
     Order.by(_.getDual)

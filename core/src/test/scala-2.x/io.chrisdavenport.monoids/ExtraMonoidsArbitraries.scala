@@ -2,7 +2,7 @@ package io.chrisdavenport.monoids
 
 import org.scalacheck._
 
-trait MonoidsArbitraries {
+trait ExtraMonoidsArbitraries {
   implicit def dualArbitrary[A: Arbitrary]: Arbitrary[Dual[A]] =
     Arbitrary(Arbitrary.arbitrary[A].map(Dual(_)))
   implicit def productArbitrary[A: Arbitrary]: Arbitrary[Product[A]] =

@@ -22,7 +22,7 @@ private[monoids] trait SumInstances extends SumInstances1 {
     }
 
   implicit def sumShow[A: Show]: Show[Sum[A]] =
-    Show.show[Sum[A]](SumA => show"Sum(${SumA.getSum})")
+    Show.show[Sum[A]](sumA => s"Sum(${sumA.getSum})")
 
   implicit def sumOrder[A: Order]: Order[Sum[A]] =
     Order.by(_.getSum)

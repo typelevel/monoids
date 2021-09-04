@@ -5,8 +5,8 @@ import cats.implicits._
 import cats.kernel.laws.discipline._
 import cats.laws.discipline._
 
-class DualTests extends munit.DisciplineSuite with MonoidsArbitraries {
-  checkAll("Dual", EqTests[Dual[Int]])
+class DualTests extends munit.DisciplineSuite with MonoidsArbitraries with ExtraMonoidsArbitraries {
+  checkAll("Dual", EqTests[Dual[Int]].eqv)
   checkAll("Dual", OrderTests[Dual[Int]].order)
   checkAll("Dual", MonoidTests[Dual[Int]].monoid)
   checkAll("Dual", MonadTests[Dual].monad[Int, Int, Int])

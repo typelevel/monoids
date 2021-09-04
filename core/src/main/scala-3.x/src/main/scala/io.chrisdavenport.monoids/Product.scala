@@ -25,7 +25,7 @@ private[monoids] trait ProductInstances extends ProductInstances1 {
     }
 
   implicit def productShow[A: Show]: Show[Product[A]] =
-    Show.show[Product[A]](productA => show"Product(${productA.getProduct})")
+    Show.show[Product[A]](productA => s"Product(${productA.getProduct})")
 
   implicit def productOrder[A: Order]: Order[Product[A]] =
     Order.by(_.getProduct)

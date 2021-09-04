@@ -5,8 +5,8 @@ import cats.implicits._
 import cats.kernel.laws.discipline._
 import cats.laws.discipline._
 
-class SumTests extends munit.DisciplineSuite with MonoidsArbitraries {
-  checkAll("Sum", EqTests[Sum[Int]])
+class SumTests extends munit.DisciplineSuite with MonoidsArbitraries with ExtraMonoidsArbitraries {
+  checkAll("Sum", EqTests[Sum[Int]].eqv)
   checkAll("Sum", OrderTests[Sum[Int]].order)
   checkAll("Sum", CommutativeMonoidTests[Sum[Int]].commutativeMonoid)
   checkAll("Sum", CommutativeMonadTests[Sum].commutativeMonad[Int, Int, Int])
