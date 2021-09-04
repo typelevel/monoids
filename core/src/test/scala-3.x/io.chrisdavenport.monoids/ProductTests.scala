@@ -5,7 +5,10 @@ import cats.implicits._
 import cats.kernel.laws.discipline._
 import cats.laws.discipline._
 
-class ProductTests extends munit.DisciplineSuite with MonoidsArbitraries with ExtraMonoidsArbitraries {
+class ProductTests
+    extends munit.DisciplineSuite
+    with MonoidsArbitraries
+    with ExtraMonoidsArbitraries {
   checkAll("Product", EqTests[Product[Int]].eqv)
   checkAll("Product", OrderTests[Product[Int]].order)
   checkAll("Product", CommutativeMonoidTests[Product[Int]].commutativeMonoid)
