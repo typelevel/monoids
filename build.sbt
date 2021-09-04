@@ -87,17 +87,25 @@ def scalaVersionSpecificFolders(srcName: String, srcBaseDir: java.io.File, scala
       .flatMap(_.sharedSrcDir(srcBaseDir, srcName).toList.map(f => file(f.getPath + suffix)))
 
   CrossVersion.partialVersion(scalaVersion) match {
-    case Some((2, _))     => extraDirs("-2.x")
+    case Some((2, _)) => extraDirs("-2.x")
     case Some((0 | 3, _)) => extraDirs("-3.x")
-    case _                => Nil
+    case _ => Nil
   }
 }
 
 // General Settings
 lazy val commonSettings = Seq(
   organization := "io.chrisdavenport",
-  Compile / unmanagedSourceDirectories ++= scalaVersionSpecificFolders("main", baseDirectory.value, scalaVersion.value),
-  Test / unmanagedSourceDirectories ++= scalaVersionSpecificFolders("test", baseDirectory.value, scalaVersion.value),
+  Compile / unmanagedSourceDirectories ++= scalaVersionSpecificFolders(
+    "main",
+    baseDirectory.value,
+    scalaVersion.value
+  ),
+  Test / unmanagedSourceDirectories ++= scalaVersionSpecificFolders(
+    "test",
+    baseDirectory.value,
+    scalaVersion.value
+  ),
   scalacOptions ++= (
     if (ScalaArtifacts.isScala3(scalaVersion.value)) Nil
     else Seq("-Yrangepos", "-language:higherKinds")
@@ -105,11 +113,11 @@ lazy val commonSettings = Seq(
   libraryDependencies ++= (
     if (ScalaArtifacts.isScala3(scalaVersion.value)) Nil
     else
-      Seq (
+      Seq(
         compilerPlugin(
-      ("org.typelevel" %% "kind-projector" % kindProjectorV).cross(CrossVersion.full)
-    ),
-        compilerPlugin("com.olegpy" %% "better-monadic-for" % betterMonadicForV),
+          ("org.typelevel" %% "kind-projector" % kindProjectorV).cross(CrossVersion.full)
+        ),
+        compilerPlugin("com.olegpy" %% "better-monadic-for" % betterMonadicForV)
       )
   ),
   libraryDependencies ++= Seq(
