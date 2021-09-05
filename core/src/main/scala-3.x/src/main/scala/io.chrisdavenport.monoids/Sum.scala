@@ -11,8 +11,7 @@ object Sum extends SumInstances:
   def unapply[A](arg: Sum[A]): Option[A] = Some(arg.getSum)
   def sum[F[_]: Foldable, A](fa: F[A])(implicit A: Monoid[Sum[A]]): A = fa.foldMap(Sum(_)).getSum
 
-extension [A](s: Sum[A])
-  def getSum: A = s
+extension [A](s: Sum[A]) def getSum: A = s
 
 private[monoids] trait SumInstances extends SumInstances1 {
   implicit def sumNumericMonoid[A](implicit T: Numeric[A]): CommutativeMonoid[Sum[A]] =

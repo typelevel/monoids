@@ -12,8 +12,7 @@ object Product extends ProductInstances:
   def product[F[_]: Foldable, A](fa: F[A])(implicit A: Monoid[Product[A]]): A =
     fa.foldMap(Product(_)).getProduct
 
-extension [A](p: Product[A])
-  def getProduct: A = p
+extension [A](p: Product[A]) def getProduct: A = p
 
 private[monoids] trait ProductInstances extends ProductInstances1 {
   implicit def productNumericMonoid[A](implicit T: Numeric[A]): CommutativeMonoid[Product[A]] =

@@ -9,8 +9,7 @@ object Dual extends DualInstances:
   def apply[A](getDual: A): Dual[A] = getDual
   def unapply[A](arg: Dual[A]): Option[A] = Some(arg.getDual)
 
-extension [A](d: Dual[A])
-  def getDual: A = d
+extension [A](d: Dual[A]) def getDual: A = d
 
 private[monoids] trait DualInstances extends DualInstances1 {
   implicit def dualMonoid[A: Monoid]: Monoid[Dual[A]] = new Monoid[Dual[A]] {
