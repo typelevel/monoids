@@ -7,7 +7,6 @@ val Scala213 = "2.13.6"
 val Scala3 = "3.0.2"
 
 val Scala212Cond = s"matrix.scala == '$Scala212'"
-val isNotScala3Cond = s"matrix.scala != '$Scala3'"
 
 ThisBuild / scalaVersion := Scala213
 ThisBuild / crossScalaVersions := Seq(Scala212, Scala213, Scala3)
@@ -32,8 +31,7 @@ ThisBuild / githubWorkflowBuild := Seq(
   WorkflowStep
     .Sbt(
       List("scalafmtCheckAll", "scalafmtSbtCheck"),
-      name = Some("Check formatting"),
-      cond = Some(isNotScala3Cond)
+      name = Some("Check formatting")
     ),
   WorkflowStep.Sbt(List("mimaReportBinaryIssues"), name = Some("Check binary issues")),
   WorkflowStep.Sbt(List("Test/compile"), name = Some("Compile")),
