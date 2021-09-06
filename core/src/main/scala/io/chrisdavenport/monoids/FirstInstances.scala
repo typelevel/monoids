@@ -1,16 +1,13 @@
 package io.chrisdavenport.monoids
 
 import cats._
-import cats.implicits._
-
-final case class First[A](getFirst: Option[A]) extends AnyVal
-object First extends FirstInstances
+import cats.syntax.all._
 
 private[monoids] trait FirstInstances extends FirstInstances1 {
   implicit def firstMonoid[A]: Monoid[First[A]] = MonoidK[First].algebra
 
   implicit def firstShow[A: Show]: Show[First[A]] =
-    Show.show[First[A]](FirstA => show"First(${FirstA.getFirst})")
+    Show.show[First[A]](FirstA => s"First(${FirstA.getFirst.show})")
 
   implicit def firstOrder[A: Order]: Order[First[A]] =
     Order.by(_.getFirst)
@@ -23,10 +20,10 @@ private[monoids] trait FirstInstances extends FirstInstances1 {
 
       @scala.annotation.tailrec
       def tailRecM[A, B](a: A)(f: A => First[Either[A, B]]): First[B] =
-        f(a) match {
-          case First(Some(Left(a))) => tailRecM(a)(f)
-          case First(Some(Right(b))) => First(b.some)
-          case First(None) => First(None)
+        f(a).getFirst match {
+          case Some(Left(a)) => tailRecM(a)(f)
+          case Some(Right(b)) => First(b.some)
+          case None => First(None)
         }
       def foldLeft[A, B](fa: First[A], b: B)(f: (B, A) => B): B =
         fa.getFirst.foldLeft(b)(f)
