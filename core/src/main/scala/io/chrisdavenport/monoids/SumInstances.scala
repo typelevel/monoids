@@ -5,6 +5,8 @@ import cats.kernel.CommutativeMonoid
 import cats.syntax.all._
 
 private[monoids] trait SumInstances extends SumInstances1 {
+  def sum[F[_]: Foldable, A](fa: F[A])(implicit A: Monoid[Sum[A]]): A = fa.foldMap(Sum(_)).getSum
+
   implicit def sumNumericMonoid[A](implicit T: Numeric[A]): CommutativeMonoid[Sum[A]] =
     new CommutativeMonoid[Sum[A]] {
       def empty: Sum[A] = Sum(T.zero)
