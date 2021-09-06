@@ -5,6 +5,12 @@ import org.scalacheck._
 trait MonoidsArbitraries {
   implicit def functionArb[A, B: Arbitrary]: Arbitrary[A => B] =
     Arbitrary(Arbitrary.arbitrary[B].map(b => (_: A) => b))
+  implicit def dualArbitrary[A: Arbitrary]: Arbitrary[Dual[A]] =
+    Arbitrary(Arbitrary.arbitrary[A].map(Dual(_)))
+  implicit def productArbitrary[A: Arbitrary]: Arbitrary[Product[A]] =
+    Arbitrary(Arbitrary.arbitrary[A].map(Product(_)))
+  implicit def sumArbitrary[A: Arbitrary]: Arbitrary[Sum[A]] =
+    Arbitrary(Arbitrary.arbitrary[A].map(Sum(_)))
   implicit val allArbitrary: Arbitrary[All] =
     Arbitrary(Arbitrary.arbitrary[Boolean].map(All(_)))
   implicit val anyArbitrary: Arbitrary[Any] =
