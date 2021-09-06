@@ -50,4 +50,3 @@ private[monoids] trait DualInstances extends DualInstances1 {
 private[monoids] trait DualInstances1 {
   implicit def dualEq[A: Eq]: Eq[Dual[A]] = Eq.by(_.getDual)
 }
-
