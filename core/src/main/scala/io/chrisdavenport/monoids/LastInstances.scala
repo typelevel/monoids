@@ -1,16 +1,13 @@
 package io.chrisdavenport.monoids
 
 import cats._
-import cats.implicits._
-
-final case class Last[A](getLast: Option[A]) extends AnyVal
-object Last extends LastInstances
+import cats.syntax.all._
 
 private[monoids] trait LastInstances extends LastInstances1 {
   implicit def lastMonoid[A]: Monoid[Last[A]] = MonoidK[Last].algebra
 
   implicit def lastShow[A: Show]: Show[Last[A]] =
-    Show.show[Last[A]](LastA => show"Last(${LastA.getLast})")
+    Show.show[Last[A]](LastA => s"Last(${LastA.getLast.show})")
 
   implicit def lastOrder[A: Order]: Order[Last[A]] =
     Order.by(_.getLast)
@@ -23,10 +20,10 @@ private[monoids] trait LastInstances extends LastInstances1 {
 
       @scala.annotation.tailrec
       def tailRecM[A, B](a: A)(f: A => Last[Either[A, B]]): Last[B] =
-        f(a) match {
-          case Last(Some(Left(a))) => tailRecM(a)(f)
-          case Last(Some(Right(b))) => Last(b.some)
-          case Last(None) => Last(None)
+        f(a).getLast match {
+          case Some(Left(a)) => tailRecM(a)(f)
+          case Some(Right(b)) => Last(b.some)
+          case None => Last(None)
         }
       def foldLeft[A, B](fa: Last[A], b: B)(f: (B, A) => B): B =
         fa.getLast.foldLeft(b)(f)
