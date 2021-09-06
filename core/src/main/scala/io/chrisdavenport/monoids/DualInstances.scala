@@ -1,7 +1,7 @@
 package io.chrisdavenport.monoids
 
 import cats._
-import cats.implicits._
+import cats.syntax.all._
 
 private[monoids] trait DualInstances extends DualInstances1 {
   implicit def dualMonoid[A: Monoid]: Monoid[Dual[A]] = new Monoid[Dual[A]] {

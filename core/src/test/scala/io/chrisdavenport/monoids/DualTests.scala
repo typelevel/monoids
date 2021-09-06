@@ -1,7 +1,7 @@
 package io.chrisdavenport.monoids
 
 import cats._
-import cats.implicits._
+import cats.syntax.all._
 import cats.kernel.laws.discipline._
 import cats.laws.discipline._
 
