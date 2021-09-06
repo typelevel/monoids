@@ -2,12 +2,9 @@ package io.chrisdavenport.monoids
 
 import cats._
 import cats.kernel.{CommutativeGroup, CommutativeMonoid}
-import cats.implicits._
+import cats.syntax.all._
 
 import scala.annotation.nowarn
-
-final case class Xor[A](getXor: Set[A]) extends AnyVal
-object Xor extends XorInstances
 
 private[monoids] abstract class XorInstances {
   implicit def xor[A]: CommutativeGroup[Xor[A]] = new CommutativeGroup[Xor[A]] {
