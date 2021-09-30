@@ -72,3 +72,20 @@ Last(Option.empty[Int]) |+| Last(2.some)
 Last(1.some) |+| Last(2.some) |+| Last(Option.empty[Int])
 Last(1.some) |+| Last(Option.empty[Int]) |+| Last(Option.empty[Int])
 ```
+
+## Scala 3 support
+Scala 3 support implemented using [opaque types](https://docs.scala-lang.org/scala3/book/types-opaque-types.html#opaque-types).
+Due to limitation in opaque types `toString()` method on every `monoids` type 
+produce unwrapped-value without wrapper-type information, e.g.:
+```tut:silent
+val resultString = List(true, true, true).foldMap(All(_)).toString // "true"
+```
+That behaviour differs from Scala 2 one - `toString()` method would produce wrapped-value:
+```tut:silent
+val resultString = List(true, true, true).foldMap(All(_)).toString // "All(true)"
+```
+So it's recommended to use `Show[T].show` from `cats` for converting to string. 
+Its behaviour is consistent for both Scala 2 and Scala 3:
+```tut:silent
+val resultString = List(true, true, true).foldMap(All(_)).show // "All(true)"
+```
