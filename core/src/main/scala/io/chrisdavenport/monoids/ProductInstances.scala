@@ -2,15 +2,12 @@ package io.chrisdavenport.monoids
 
 import cats._
 import cats.kernel.CommutativeMonoid
-import cats.implicits._
-
-final case class Product[A](getProduct: A) extends AnyVal
-object Product extends ProductInstances {
-  def product[F[_]: Foldable, A](fa: F[A])(implicit A: Monoid[Product[A]]): A =
-    fa.foldMap(Product(_)).getProduct
-}
+import cats.syntax.all._
 
 private[monoids] trait ProductInstances extends ProductInstances1 {
+  def product[F[_]: Foldable, A](fa: F[A])(implicit A: Monoid[Product[A]]): A =
+    fa.foldMap(Product(_)).getProduct
+
   implicit def productNumericMonoid[A](implicit T: Numeric[A]): CommutativeMonoid[Product[A]] =
     new CommutativeMonoid[Product[A]] {
       def empty: Product[A] = Product(T.one)
@@ -20,7 +17,7 @@ private[monoids] trait ProductInstances extends ProductInstances1 {
     }
 
   implicit def productShow[A: Show]: Show[Product[A]] =
-    Show.show[Product[A]](productA => show"Product(${productA.getProduct})")
+    Show.show[Product[A]](productA => s"Product(${productA.getProduct.show})")
 
   implicit def productOrder[A: Order]: Order[Product[A]] =
     Order.by(_.getProduct)
@@ -34,9 +31,9 @@ private[monoids] trait ProductInstances extends ProductInstances1 {
 
       @scala.annotation.tailrec
       def tailRecM[A, B](a: A)(f: A => Product[Either[A, B]]): Product[B] =
-        f(a) match {
-          case Product(Left(a)) => tailRecM(a)(f)
-          case Product(Right(b)) => Product(b)
+        f(a).getProduct match {
+          case Left(a) => tailRecM(a)(f)
+          case Right(b) => Product(b)
         }
       // Members declared in cats.Foldable
       def foldLeft[A, B](fa: Product[A], b: B)(f: (B, A) => B): B =

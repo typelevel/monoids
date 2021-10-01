@@ -2,13 +2,10 @@ package io.chrisdavenport.monoids
 
 import cats._
 import cats.kernel.CommutativeMonoid
-import cats.implicits._
-final case class Sum[A](getSum: A) extends AnyVal
-object Sum extends SumInstances {
-  def sum[F[_]: Foldable, A](fa: F[A])(implicit A: Monoid[Sum[A]]): A = fa.foldMap(Sum(_)).getSum
-}
+import cats.syntax.all._
 
 private[monoids] trait SumInstances extends SumInstances1 {
+  def sum[F[_]: Foldable, A](fa: F[A])(implicit A: Monoid[Sum[A]]): A = fa.foldMap(Sum(_)).getSum
 
   implicit def sumNumericMonoid[A](implicit T: Numeric[A]): CommutativeMonoid[Sum[A]] =
     new CommutativeMonoid[Sum[A]] {
@@ -17,7 +14,7 @@ private[monoids] trait SumInstances extends SumInstances1 {
     }
 
   implicit def sumShow[A: Show]: Show[Sum[A]] =
-    Show.show[Sum[A]](SumA => show"Sum(${SumA.getSum})")
+    Show.show[Sum[A]](SumA => s"Sum(${SumA.getSum.show})")
 
   implicit def sumOrder[A: Order]: Order[Sum[A]] =
     Order.by(_.getSum)
@@ -31,9 +28,9 @@ private[monoids] trait SumInstances extends SumInstances1 {
 
       @scala.annotation.tailrec
       def tailRecM[A, B](a: A)(f: A => Sum[Either[A, B]]): Sum[B] =
-        f(a) match {
-          case Sum(Left(a)) => tailRecM(a)(f)
-          case Sum(Right(b)) => Sum(b)
+        f(a).getSum match {
+          case Left(a) => tailRecM(a)(f)
+          case Right(b) => Sum(b)
         }
 
       // Members declared in cats.Foldable
