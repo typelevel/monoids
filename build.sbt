@@ -98,7 +98,7 @@ def scalaVersionSpecificFolders(srcName: String, srcBaseDir: java.io.File, scala
 
 // General Settings
 lazy val commonSettings = Seq(
-  organization := "io.chrisdavenport",
+  organization := "org.typelevel",
   Compile / unmanagedSourceDirectories ++= scalaVersionSpecificFolders(
     "main",
     baseDirectory.value,
@@ -133,8 +133,8 @@ lazy val commonSettings = Seq(
 
 inThisBuild(
   List(
-    organization := "io.chrisdavenport",
-    homepage := Some(url("https://github.com/ChristopherDavenport/monoids")),
+    organization := "org.typelevel",
+    homepage := Some(url("https://github.com/typelevel/monoids")),
     licenses += ("MIT", url("http://opensource.org/licenses/MIT")),
     developers := {
       (for ((username, name) <- contributors)
@@ -174,10 +174,10 @@ lazy val micrositeSettings = {
     micrositeName := "monoids",
     micrositeDescription := "Generic Monoids for Scala",
     micrositeAuthor := "Christopher Davenport",
-    micrositeGithubOwner := "ChristopherDavenport",
+    micrositeGithubOwner := "typelevel",
     micrositeGithubRepo := "monoids",
     micrositeBaseUrl := "/monoids",
-    micrositeDocumentationUrl := "https://www.javadoc.io/doc/io.chrisdavenport/monoids_2.12",
+    micrositeDocumentationUrl := "https://typelevel.org/monoids",
     micrositeFooterText := None,
     micrositeHighlightTheme := "atom-one-light",
     micrositePalette := Map(
