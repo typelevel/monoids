@@ -87,7 +87,9 @@ lazy val docs = project
   .settings(
     commonSettings,
     skipOnPublishSettings,
-    micrositeSettings
+    micrositeSettings,
+    publish / skip := true,
+    githubWorkflowArtifactUpload := false
   )
   .dependsOn(core.jvm)
   .enablePlugins(MicrositesPlugin)
