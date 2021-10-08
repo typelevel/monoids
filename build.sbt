@@ -41,7 +41,8 @@ ThisBuild / githubWorkflowBuild := Seq(
     List("docs/makeMicrosite"),
     name = Some("Build the Microsite"),
     cond = Some(Scala212Cond)
-  )
+  ),
+  WorkflowStep.Sbt(List("release"), name = Some("Release"))
 )
 ThisBuild / githubWorkflowBuildPreamble ++=
   rubySetupSteps(Some(Scala212Cond))
