@@ -48,9 +48,9 @@ ThisBuild / githubWorkflowBuildPreamble ++=
 
 lazy val monoids = project
   .in(file("."))
-  .disablePlugins(MimaPlugin)
   .settings(commonSettings, skipOnPublishSettings)
   .aggregate(core.jvm, core.js)
+  .enablePlugins(NoPublishPlugin)
 
 lazy val core = crossProject(JSPlatform, JVMPlatform)
   .crossType(CrossType.Pure)
@@ -61,7 +61,7 @@ lazy val core = crossProject(JSPlatform, JVMPlatform)
   )
   .jsSettings(
     scalaJSLinkerConfig ~= (_.withModuleKind(ModuleKind.CommonJSModule))
-  )
+  ).enablePlugins(SonatypeCiReleasePlugin)
 
 lazy val docs = project
   .in(file("docs"))
@@ -73,6 +73,7 @@ lazy val docs = project
   .dependsOn(core.jvm)
   .enablePlugins(MicrositesPlugin)
   .enablePlugins(MdocPlugin)
+  //.enablePlugins(NoPublishPlugin)
   .settings(mdocIn := sourceDirectory.value / "main" / "mdoc")
 
 val catsV = "2.6.1"
@@ -134,8 +135,16 @@ lazy val commonSettings = Seq(
 inThisBuild(
   List(
     organization := "org.typelevel",
+    organizationName := "Typelevel",
+    baseVersion := "0.2.0",
+    publishGithubUser := "rossabaker",
+    publishFullName := "Ross A. Baker",
     homepage := Some(url("https://github.com/typelevel/monoids")),
-    licenses += ("MIT", url("http://opensource.org/licenses/MIT")),
+    scmInfo := Some(ScmInfo(
+      url("https://github.com/typelevel/monoids"),
+      "git@github.com:typelevel/monoids.git"
+    )),
+    licenses := List("MIT" -> url("http://opensource.org/licenses/MIT")),
     developers := {
       (for ((username, name) <- contributors)
         yield Developer(username, name, "", url(s"http://github.com/$username"))).toList
