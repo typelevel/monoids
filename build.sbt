@@ -41,11 +41,25 @@ ThisBuild / githubWorkflowBuild := Seq(
     List("docs/makeMicrosite"),
     name = Some("Build the Microsite"),
     cond = Some(Scala212Cond)
-  ),
-  WorkflowStep.Sbt(List("release"), name = Some("Release"))
+  )
 )
+
 ThisBuild / githubWorkflowBuildPreamble ++=
   rubySetupSteps(Some(Scala212Cond))
+
+ThisBuild / githubWorkflowTargetTags ++= Seq("v*")
+
+// currently only publishing tags
+ThisBuild / githubWorkflowPublishTargetBranches :=
+  Seq(RefPredicate.StartsWith(Ref.Tag("v")))
+
+ThisBuild / githubWorkflowPublishPreamble ++=
+  rubySetupSteps(None)
+
+ThisBuild / githubWorkflowPublish := Seq(
+  WorkflowStep.Sbt(List("release"), name = Some("Release")),
+  WorkflowStep.Sbt(List(s"++${Scala212}", "docs/publishMicrosite"), name = Some(s"Publish microsite"))
+)
 
 lazy val monoids = project
   .in(file("."))
