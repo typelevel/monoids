@@ -12,9 +12,13 @@ on:
     branches: ['**']
   push:
     branches: ['**']
+    tags: [v*]
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+  SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+  PGP_SECRET: ${{ secrets.PGP_SECRET }}
 
 jobs:
   build:
@@ -81,3 +85,6 @@ jobs:
       - name: Build the Microsite
         if: matrix.scala == '2.12.15'
         run: sbt ++${{ matrix.scala }} docs/makeMicrosite
+
+      - name: Release
+        run: sbt ++${{ matrix.scala }} release
