@@ -112,7 +112,19 @@ lazy val commonSettings = Seq(
     baseDirectory.value,
     scalaVersion.value
   ),
-  scalacOptions := scalacOptions.value.distinct.filterNot(_ == "-source:3.0-migration"),
+  scalacOptions := scalacOptions.value.filterNot(_ == "-source:3.0-migration"),
+  scalacOptions --= (
+    if (ScalaArtifacts.isScala3(scalaVersion.value))
+      Seq(
+        "-deprecation",
+        "-encoding",
+        "-feature",
+        "-Ykind-projector",
+        "-unchecked",
+        "-language:implicitConversions"
+      )
+    else Nil
+  ),
   scalacOptions ++= (
     if (ScalaArtifacts.isScala3(scalaVersion.value)) Nil
     else Seq("-Yrangepos", "-language:higherKinds")
