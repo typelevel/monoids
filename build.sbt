@@ -55,13 +55,14 @@ lazy val monoids = project
 lazy val core = crossProject(JSPlatform, JVMPlatform)
   .crossType(CrossType.Pure)
   .in(file("core"))
+  .enablePlugins(SonatypeCiReleasePlugin)
   .settings(commonSettings, mimaSettings)
   .settings(
     name := "monoids"
   )
   .jsSettings(
     scalaJSLinkerConfig ~= (_.withModuleKind(ModuleKind.CommonJSModule))
-  ).enablePlugins(SonatypeCiReleasePlugin)
+  )
 
 lazy val docs = project
   .in(file("docs"))
@@ -73,7 +74,7 @@ lazy val docs = project
   .dependsOn(core.jvm)
   .enablePlugins(MicrositesPlugin)
   .enablePlugins(MdocPlugin)
-  //.enablePlugins(NoPublishPlugin)
+  .enablePlugins(NoPublishPlugin)
   .settings(mdocIn := sourceDirectory.value / "main" / "mdoc")
 
 val catsV = "2.6.1"
@@ -110,6 +111,7 @@ lazy val commonSettings = Seq(
     baseDirectory.value,
     scalaVersion.value
   ),
+  scalacOptions := scalacOptions.value.distinct.filterNot(_ == "-source:3.0-migration"),
   scalacOptions ++= (
     if (ScalaArtifacts.isScala3(scalaVersion.value)) Nil
     else Seq("-Yrangepos", "-language:higherKinds")
@@ -144,7 +146,7 @@ inThisBuild(
       url("https://github.com/typelevel/monoids"),
       "git@github.com:typelevel/monoids.git"
     )),
-    licenses := List("MIT" -> url("http://opensource.org/licenses/MIT")),
+    licenses := List("MIT" -> url("https://opensource.org/licenses/MIT")),
     developers := {
       (for ((username, name) <- contributors)
         yield Developer(username, name, "", url(s"http://github.com/$username"))).toList
