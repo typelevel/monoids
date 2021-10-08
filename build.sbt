@@ -58,7 +58,10 @@ ThisBuild / githubWorkflowPublishPreamble ++=
 
 ThisBuild / githubWorkflowPublish := Seq(
   WorkflowStep.Sbt(List("release"), name = Some("Release")),
-  WorkflowStep.Sbt(List(s"++${Scala212}", "docs/publishMicrosite"), name = Some(s"Publish microsite"))
+  WorkflowStep.Sbt(
+    List(s"++${Scala212}", "docs/publishMicrosite"),
+    name = Some(s"Publish microsite")
+  )
 )
 
 lazy val monoids = project
