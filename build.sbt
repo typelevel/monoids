@@ -26,7 +26,8 @@ def rubySetupSteps(cond: Option[String]) = Seq(
 )
 
 ThisBuild / githubWorkflowPublishTargetBranches := Seq()
-ThisBuild / githubWorkflowJavaVersions := Seq("adopt@1.8", "adopt@1.11", "adopt@1.16")
+ThisBuild / githubWorkflowEnv += ("JABBA_INDEX" -> "https://github.com/typelevel/jdk-index/raw/main/index.json")
+ThisBuild / githubWorkflowJavaVersions := Seq("adoptium@8", "adoptium@17")
 ThisBuild / githubWorkflowBuild := Seq(
   WorkflowStep
     .Sbt(
