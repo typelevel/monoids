@@ -73,6 +73,18 @@ Last(1.some) |+| Last(2.some) |+| Last(Option.empty[Int])
 Last(1.some) |+| Last(Option.empty[Int]) |+| Last(Option.empty[Int])
 ```
 
+As mentioned in the beginning `Dual` inverts the `combine` operation of a `monoid`.
+However, this can only be clearly observed when the algebra is not commutative.
+
+```tut:book
+Dual("World") |+| Dual("Hello")
+Dual("Hello") |+| Dual("World")
+
+Dual(1) |+| Dual(2)
+Dual(2) |+| Dual(1)
+```
+
+
 ## Scala 3 support
 Scala 3 support implemented using [opaque types](https://docs.scala-lang.org/scala3/book/types-opaque-types.html#opaque-types).
 Due to limitation in opaque types `toString()` method on every `monoids` type 
