@@ -73,8 +73,8 @@ Last(1.some) |+| Last(2.some) |+| Last(Option.empty[Int])
 Last(1.some) |+| Last(Option.empty[Int]) |+| Last(Option.empty[Int])
 ```
 
-As mentioned in the beginning `Dual` inverts the `combine` operation of a `monoid`.
-However, this can only be clearly observed when the algebra is not commutative.
+As mentioned above, `Dual` inverts the `combine` operation of a `Monoid`.
+That could be well observed for the non-commutative algebra.
 
 ```tut:book
 Dual("World") |+| Dual("Hello")
