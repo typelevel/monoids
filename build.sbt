@@ -44,18 +44,37 @@ ThisBuild / githubWorkflowBuild := Seq(
     cond = Some(Scala212Cond)
   )
 )
+
 ThisBuild / githubWorkflowBuildPreamble ++=
   rubySetupSteps(Some(Scala212Cond))
 
+ThisBuild / githubWorkflowTargetTags ++= Seq("v*")
+
+// currently only publishing tags
+ThisBuild / githubWorkflowPublishTargetBranches :=
+  Seq(RefPredicate.StartsWith(Ref.Tag("v")))
+
+ThisBuild / githubWorkflowPublishPreamble ++=
+  rubySetupSteps(None)
+
+ThisBuild / githubWorkflowPublish := Seq(
+  WorkflowStep.Sbt(List("release"), name = Some("Release")),
+  WorkflowStep.Sbt(
+    List(s"++${Scala212}", "docs/publishMicrosite"),
+    name = Some(s"Publish microsite")
+  )
+)
+
 lazy val monoids = project
   .in(file("."))
-  .disablePlugins(MimaPlugin)
   .settings(commonSettings, skipOnPublishSettings)
   .aggregate(core.jvm, core.js)
+  .enablePlugins(NoPublishPlugin)
 
 lazy val core = crossProject(JSPlatform, JVMPlatform)
   .crossType(CrossType.Pure)
   .in(file("core"))
+  .enablePlugins(SonatypeCiReleasePlugin)
   .settings(commonSettings, mimaSettings)
   .settings(
     name := "monoids"
@@ -69,11 +88,14 @@ lazy val docs = project
   .settings(
     commonSettings,
     skipOnPublishSettings,
-    micrositeSettings
+    micrositeSettings,
+    publish / skip := true,
+    githubWorkflowArtifactUpload := false
   )
   .dependsOn(core.jvm)
   .enablePlugins(MicrositesPlugin)
   .enablePlugins(MdocPlugin)
+  .enablePlugins(NoPublishPlugin)
   .settings(mdocIn := sourceDirectory.value / "main" / "mdoc")
 
 val catsV = "2.6.1"
@@ -110,6 +132,19 @@ lazy val commonSettings = Seq(
     baseDirectory.value,
     scalaVersion.value
   ),
+  scalacOptions := scalacOptions.value.filterNot(_ == "-source:3.0-migration"),
+  scalacOptions --= (
+    if (ScalaArtifacts.isScala3(scalaVersion.value))
+      Seq(
+        "-deprecation",
+        "-encoding",
+        "-feature",
+        "-Ykind-projector",
+        "-unchecked",
+        "-language:implicitConversions"
+      )
+    else Nil
+  ),
   scalacOptions ++= (
     if (ScalaArtifacts.isScala3(scalaVersion.value)) Nil
     else Seq("-Yrangepos", "-language:higherKinds")
@@ -135,8 +170,16 @@ lazy val commonSettings = Seq(
 inThisBuild(
   List(
     organization := "org.typelevel",
+    organizationName := "Typelevel",
+    baseVersion := "0.2.0",
+    publishGithubUser := "rossabaker",
+    publishFullName := "Ross A. Baker",
     homepage := Some(url("https://github.com/typelevel/monoids")),
-    licenses += ("MIT", url("http://opensource.org/licenses/MIT")),
+    scmInfo := Some(ScmInfo(
+      url("https://github.com/typelevel/monoids"),
+      "git@github.com:typelevel/monoids.git"
+    )),
+    licenses := List("MIT" -> url("https://opensource.org/licenses/MIT")),
     developers := {
       (for ((username, name) <- contributors)
         yield Developer(username, name, "", url(s"http://github.com/$username"))).toList
