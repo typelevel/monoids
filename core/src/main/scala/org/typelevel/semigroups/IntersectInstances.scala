@@ -43,7 +43,7 @@ private[semigroups] abstract class IntersectInstances {
       def combineK[A](x: Intersect[A], y: Intersect[A]): Intersect[A] =
         Intersect(SemigroupK[Set].combineK(x.getIntersect, y.getIntersect))
       def unorderedTraverse[G[_]: CommutativeApplicative, A, B](sa: Intersect[A])(
-        f: A => G[B]
+          f: A => G[B]
       ): G[Intersect[B]] =
         UnorderedTraverse[Set].unorderedTraverse(sa.getIntersect)(f).map(Intersect(_))
       def unorderedFoldMap[A, B: CommutativeMonoid](fa: Intersect[A])(f: A => B): B =
