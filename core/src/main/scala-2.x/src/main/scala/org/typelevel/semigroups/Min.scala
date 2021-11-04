@@ -19,7 +19,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package src.main.scala.org.typelevel.semigroups
+package org.typelevel.semigroups
 
 final case class Min[A](getMin: A) extends AnyVal
 
