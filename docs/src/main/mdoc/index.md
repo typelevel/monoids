@@ -2,7 +2,7 @@
 layout: home
 
 ---
-# monoids ![Continuous Integration](https://github.com/typelevel/monoids/workflows/Continuous%20Integration/badge.svg) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/monoids_2.13/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/monoids_2.13)
+# monoids ![Continuous Integration](https://github.com/typelevel/monoids/workflows/Continuous%20Integration/badge.svg) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.typelevel/monoids_2.13/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.typelevel/monoids_2.13)
 
 Monoids is a library of a set of generic `Monoid` and `Semigroup` types that are very useful for abstract programming.
 
@@ -28,7 +28,7 @@ add the following dependencies to your `build.sbt` depending on your needs:
 
 ```scala
 libraryDependencies ++= Seq(
-  "io.chrisdavenport" %% "monoids" % "<version>"
+  "org.typelevel" %% "monoids" % "<version>"
 )
 ```
 
@@ -39,7 +39,7 @@ First some imports.
 ```tut:silent
 import cats._
 import cats.implicits._
-import io.chrisdavenport.monoids._
+import org.typelevel.monoids._
 ```
 
 The boolean monoids lift boolean algebras into monoids.
