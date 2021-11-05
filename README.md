@@ -1,9 +1,8 @@
 # monoids ![Continuous Integration](https://github.com/typelevel/monoids/workflows/Continuous%20Integration/badge.svg) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.typelevel/monoids_2.13/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.typelevel/monoids_2.13)
 
+Monoids is a library of a set of generic `Monoid` and `Semigroup` types that are very useful for abstract programming.
 
-Monoids is a library for some generic Monoids that are very useful.
-
-This library exposes
+This library exposes some generic `Monoid`s:
 
 - `All` - Boolean newtype that combines values using `&&`
 - `Any` - Boolean newtype that combines values using `||`
@@ -12,6 +11,11 @@ This library exposes
 - `Last` - Option newtype that combine takes the last element that is present
 - `Product` - Numeric newtype that combines values using Multiplication
 - `Sum` - Numeric newtype that combines values using Addition
+
+Also some generic `Semigroup`s:
+- `Dual` inverts the combine operation.
+- `Max` exposes a Max that given an `Order` will return the maximum value.
+- `Min` exposes a Min that given an `Order` will return the minimum value.
 
 ## [Head on over to the Microsite](https://typelevel.org/monoids/)
 
