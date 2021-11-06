@@ -28,7 +28,7 @@ add the following dependencies to your `build.sbt` depending on your needs:
 
 ```scala
 libraryDependencies ++= Seq(
-  "org.typelevel" %% "monoids" % "<version>"
+  "org.typelevel" %%% "monoids" % "<version>"
 )
 ```
 
