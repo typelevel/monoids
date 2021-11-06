@@ -26,6 +26,6 @@ To use this project in an existing SBT project with Scala 2.12 or a later versio
 
 ```scala
 libraryDependencies ++= Seq(
-  "org.typelevel" %% "monoids" % "<version>"
+  "org.typelevel" %%% "monoids" % "<version>"
 )
 ```
