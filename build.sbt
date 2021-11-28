@@ -98,7 +98,7 @@ lazy val docs = project
   .enablePlugins(NoPublishPlugin)
   .settings(mdocIn := sourceDirectory.value / "main" / "mdoc")
 
-val catsV = "2.6.1"
+val catsV = "2.7.0"
 
 val kindProjectorV = "0.13.2"
 val betterMonadicForV = "0.3.1"
