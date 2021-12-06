@@ -27,10 +27,9 @@ def rubySetupSteps(cond: Option[String]) = Seq(
 
 val PrimaryJava = JavaSpec.temurin("8")
 val LTSJava = JavaSpec.temurin("17")
-val GraalVM11 = JavaSpec.graalvm("20.3.1", "11")
 
 ThisBuild / githubWorkflowPublishTargetBranches := Seq()
-ThisBuild / githubWorkflowJavaVersions := Seq(PrimaryJava, LTSJava, GraalVM11)
+ThisBuild / githubWorkflowJavaVersions := Seq(PrimaryJava, LTSJava)
 ThisBuild / githubWorkflowBuild := Seq(
   WorkflowStep
     .Sbt(
