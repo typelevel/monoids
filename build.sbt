@@ -13,6 +13,7 @@ ThisBuild / crossScalaVersions := Seq(Scala212, Scala3, Scala213)
 
 val PrimaryJava = JavaSpec.temurin("8")
 val LTSJava = JavaSpec.temurin("17")
+ThisBuild / githubWorkflowJavaVersions := Seq(PrimaryJava, LTSJava)
 
 lazy val root = tlCrossRootProject.aggregate(core)
 
