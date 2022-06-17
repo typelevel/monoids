@@ -36,7 +36,7 @@ lazy val docs = project
   .dependsOn(core.jvm)
   .enablePlugins(TypelevelSitePlugin)
 
-val catsV = "2.7.0"
+val catsV = "2.8.0"
 
 val kindProjectorV = "0.13.2"
 val betterMonadicForV = "0.3.1"
