@@ -17,15 +17,15 @@ ThisBuild / githubWorkflowJavaVersions := Seq(PrimaryJava, LTSJava)
 
 lazy val root = tlCrossRootProject.aggregate(core)
 
-lazy val core = crossProject(JSPlatform, JVMPlatform)
+lazy val core = crossProject(JSPlatform, JVMPlatform, NativePlatform)
   .crossType(CrossType.Pure)
   .in(file("core"))
   .settings(commonSettings)
   .settings(
     name := "monoids"
   )
-  .jsSettings(
-    scalaJSLinkerConfig ~= (_.withModuleKind(ModuleKind.CommonJSModule))
+  .nativeSettings(
+    tlVersionIntroduced := List("2.12", "2.13", "3").map(_ -> "0.2.1").toMap
   )
 
 lazy val docs = project
