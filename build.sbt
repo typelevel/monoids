@@ -67,8 +67,8 @@ lazy val commonSettings = Seq(
   ),
   libraryDependencies ++= Seq(
     "org.typelevel" %%% "cats-core"        % catsV,
-    "org.typelevel" %%% "cats-testkit"     % catsV    % Test,
-    "org.scalameta" %%% "munit"            % "0.7.29" % Test,
-    "org.typelevel" %%% "discipline-munit" % "1.0.9"  % Test
+    "org.typelevel" %%% "cats-testkit"     % catsV      % Test,
+    "org.scalameta" %%% "munit"            % "1.0.0-M6" % Test,
+    "org.typelevel" %%% "discipline-munit" % "2.0.0-M3" % Test
   )
 )
