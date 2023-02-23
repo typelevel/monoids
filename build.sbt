@@ -2,7 +2,7 @@ Global / onChangedBuildSource := ReloadOnSourceChanges
 
 val Scala212 = "2.12.17"
 val Scala213 = "2.13.10"
-val Scala3 = "3.2.0"
+val Scala3 = "3.2.2"
 
 ThisBuild / tlBaseVersion := "0.2"
 ThisBuild / licenses := List("MIT" -> url("https://opensource.org/licenses/MIT"))
@@ -36,7 +36,7 @@ lazy val docs = project
   .dependsOn(core.jvm)
   .enablePlugins(TypelevelSitePlugin)
 
-val catsV = "2.8.0"
+val catsV = "2.9.0"
 
 val kindProjectorV = "0.13.2"
 val betterMonadicForV = "0.3.1"
