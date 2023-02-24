@@ -17,15 +17,15 @@ ThisBuild / githubWorkflowJavaVersions := Seq(PrimaryJava, LTSJava)
 
 lazy val root = tlCrossRootProject.aggregate(core)
 
-lazy val core = crossProject(JSPlatform, JVMPlatform)
+lazy val core = crossProject(JSPlatform, JVMPlatform, NativePlatform)
   .crossType(CrossType.Pure)
   .in(file("core"))
   .settings(commonSettings)
   .settings(
     name := "monoids"
   )
-  .jsSettings(
-    scalaJSLinkerConfig ~= (_.withModuleKind(ModuleKind.CommonJSModule))
+  .nativeSettings(
+    tlVersionIntroduced := List("2.12", "2.13", "3").map(_ -> "0.2.1").toMap
   )
 
 lazy val docs = project
@@ -67,8 +67,8 @@ lazy val commonSettings = Seq(
   ),
   libraryDependencies ++= Seq(
     "org.typelevel" %%% "cats-core"        % catsV,
-    "org.typelevel" %%% "cats-testkit"     % catsV    % Test,
-    "org.scalameta" %%% "munit"            % "0.7.29" % Test,
-    "org.typelevel" %%% "discipline-munit" % "1.0.9"  % Test
+    "org.typelevel" %%% "cats-testkit"     % catsV      % Test,
+    "org.scalameta" %%% "munit"            % "1.0.0-M6" % Test,
+    "org.typelevel" %%% "discipline-munit" % "2.0.0-M3" % Test
   )
 )
