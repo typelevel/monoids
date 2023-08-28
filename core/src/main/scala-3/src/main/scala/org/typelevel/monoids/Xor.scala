@@ -21,9 +21,6 @@
 
 package org.typelevel.monoids
 
-import cats._
-import cats.syntax.all._
-
 opaque type Xor[A] = Set[A]
 
 object Xor extends XorInstances:
