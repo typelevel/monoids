@@ -28,7 +28,9 @@
   
   <link rel="stylesheet" type="text/css" href="helium/icofont.min.css" />
     <link rel="stylesheet" type="text/css" href="helium/laika-helium.css" />
+  
   <script src="helium/laika-helium.js"></script>
+  
   
   
   <script> /* for avoiding page load transitions */ </script>
@@ -125,10 +127,12 @@
           <li><code>Product</code> - Numeric newtype that combines values using Multiplication</li>
           <li><code>Sum</code> - Numeric newtype that combines values using Addition</li>
         </ul>
-        <p>Also some generic <code>Semigroup</code>s:
-        - <code>Dual</code> inverts the combine operation.
-        - <code>Max</code> exposes a Max that given an <code>Order</code> will return the maximum value.
-        - <code>Min</code> exposes a Min that given an <code>Order</code> will return the minimum value.</p>
+        <p>Also some generic <code>Semigroup</code>s:</p>
+        <ul>
+          <li><code>Dual</code> inverts the combine operation.</li>
+          <li><code>Max</code> exposes a Max that given an <code>Order</code> will return the maximum value.</li>
+          <li><code>Min</code> exposes a Min that given an <code>Order</code> will return the minimum value.</li>
+        </ul>
         
         <h2 id="quick-start" class="section"><a class="anchor-link left" href="#quick-start"><i class="icofont-laika link">&#xef71;</i></a>Quick Start</h2>
         <p>To use this project in an existing SBT project with Scala 2.12 or a later version, 
