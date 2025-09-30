@@ -38,7 +38,7 @@ lazy val docs = project
 
 val catsV = "2.11.0"
 
-val kindProjectorV = "0.13.3"
+val kindProjectorV = "0.13.4"
 val betterMonadicForV = "0.3.1"
 
 ThisBuild / developers ++= List(
