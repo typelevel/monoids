@@ -1,4 +1,4 @@
-# monoids ![Continuous Integration](https://github.com/typelevel/monoids/workflows/Continuous%20Integration/badge.svg) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.typelevel/monoids_2.13/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.typelevel/monoids_2.13)
+# monoids ![Continuous Integration](https://github.com/typelevel/monoids/workflows/Continuous%20Integration/badge.svg) [![Maven Central](https://img.shields.io/maven-central/v/org.typelevel/monoids_2.13)](https://central.sonatype.com/artifact/org.typelevel/monoids_2.13)
 
 Monoids is a library of a set of generic `Monoid` and `Semigroup` types that are very useful for abstract programming.
 
