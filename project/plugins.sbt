@@ -1,4 +1,4 @@
-addSbtPlugin("pl.project13.scala" % "sbt-jmh"                       % "0.4.8")
+addSbtPlugin("com.github.sbt"     % "sbt-jmh"                       % "0.4.9")
 addSbtPlugin("org.scala-js"       % "sbt-scalajs"                   % "1.20.1")
 addSbtPlugin("org.scala-native"   % "sbt-scala-native"              % "0.4.17")
 addSbtPlugin("org.portable-scala" % "sbt-scala-native-crossproject" % "1.3.2")
